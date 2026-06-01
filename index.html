@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dolibarr ERP v23.0.1 - DIASA S.A.</title>
+  
+  <!-- FontAwesome v6 para Íconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Estilos de la Aplicación -->
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/navbar.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  
+  <!-- Chart.js para Reportes Visuales (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- PANTALLA DE LOGIN (Visible por defecto si no hay sesión) -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-header">
+        <!-- Logo Delfín Dolibarr en SVG -->
+        <svg width="48" height="48" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom: 8px;">
+          <circle cx="64" cy="64" r="64" fill="#1C2B4B"/>
+          <path d="M96 52C96 38 80 34 68 34C56 34 46 42 42 50C38 58 38 68 46 76C54 84 66 86 78 84C90 82 96 66 96 52Z" fill="#F39C12"/>
+          <path d="M50 56C51.6569 56 53 54.6569 53 53C53 51.3431 51.6569 50 50 50C48.3431 50 47 51.3431 47 53C47 54.6569 48.3431 56 50 56Z" fill="#FFFFFF"/>
+          <path d="M40 76C28 76 22 66 22 66C22 66 32 62 38 68C44 74 40 76 40 76Z" fill="#F1F5F9"/>
+          <path d="M68 84C68 96 58 102 58 102C58 102 54 92 60 86C66 80 68 84 68 84Z" fill="#F1F5F9"/>
+        </svg>
+        <h2>Dolibarr ERP v23.0.1</h2>
+        <p class="text-muted" style="font-size: 12px; margin-top: 4px;">Demostrador Universitario de Prototipo</p>
+      </div>
+      <div class="login-body">
+        <div id="login-error-message" class="login-error hidden">
+          <i class="fas fa-triangle-exclamation"></i>
+          <span></span>
+        </div>
+        
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-username">Usuario</label>
+            <input type="text" id="login-username" class="form-control" placeholder="Escribe admin" required value="admin">
+          </div>
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="form-label" for="login-password">Contraseña</label>
+            <input type="password" id="login-password" class="form-control" placeholder="Escribe admin" required value="admin">
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">
+            <i class="fas fa-sign-in-alt"></i> Conectar
+          </button>
+        </form>
+      </div>
+      <div class="login-footer">
+        <div><strong>DIASA S.A.</strong> - Distribuidora Industrial Altiplano</div>
+        <div style="margin-top: 4px;">La Paz - Bolivia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LAYOUT PRINCIPAL DE LA APP SPA -->
+  <div id="app-layout" class="hidden">
+    
+    <!-- Barra de Navegación Superior -->
+    <header id="top-navbar">
+      
+      <!-- Logo y Título -->
+      <a href="#/inicio" class="navbar-brand">
+        <!-- Delfín Dolibarr SVG -->
+        <svg width="28" height="28" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="64" cy="64" r="64" fill="#FFFFFF"/>
+          <path d="M96 52C96 38 80 34 68 34C56 34 46 42 42 50C38 58 38 68 46 76C54 84 66 86 78 84C90 82 96 66 96 52Z" fill="#F39C12"/>
+          <path d="M50 56C51.6569 56 53 54.6569 53 53C53 51.3431 51.6569 50 50 50C48.3431 50 47 51.3431 47 53C47 54.6569 48.3431 56 50 56Z" fill="#FFFFFF"/>
+        </svg>
+        <span>Dolibarr</span>
+      </a>
+
+      <!-- Selector de Empresa (Fidelity) -->
+      <div class="navbar-company" title="Distribuidora Industrial Altiplano S.A.">
+        <i class="fas fa-building mr-2"></i>DIASA S.A. (Bolivia)
+      </div>
+
+      <!-- Menú Horizontal de Módulos (17 Módulos) -->
+      <button class="nav-scroll-btn nav-scroll-left" id="nav-scroll-left" title="Desplazar izquierda"><i class="fas fa-chevron-left"></i></button>
+      <div class="navbar-modules-wrapper" id="navbar-modules-wrapper">
+        <nav class="navbar-modules">
+          <a href="#/inicio" class="module-nav-item active" id="nav-mod-inicio" title="Inicio">
+            <i class="fa-solid fa-house"></i>
+            <span>Inicio</span>
+          </a>
+          <a href="#/miembros" class="module-nav-item" id="nav-mod-miembros" title="Miembros">
+            <i class="fa-solid fa-address-card"></i>
+            <span>Miembros</span>
+          </a>
+          <a href="#/terceros" class="module-nav-item" id="nav-mod-terceros" title="Terceros">
+            <i class="fa-solid fa-users"></i>
+            <span>Terceros</span>
+          </a>
+          <a href="#/productos" class="module-nav-item" id="nav-mod-productos" title="Productos">
+            <i class="fa-solid fa-box"></i>
+            <span>Productos</span>
+          </a>
+          <a href="#/mrp" class="module-nav-item" id="nav-mod-mrp" title="MRP">
+            <i class="fa-solid fa-industry"></i>
+            <span>MRP</span>
+          </a>
+          <a href="#/proyectos" class="module-nav-item" id="nav-mod-proyectos" title="Proyectos">
+            <i class="fa-solid fa-diagram-project"></i>
+            <span>Proyectos</span>
+          </a>
+          <a href="#/comercial" class="module-nav-item" id="nav-mod-comercial" title="Comercial">
+            <i class="fa-solid fa-briefcase"></i>
+            <span>Comercial</span>
+          </a>
+          <a href="#/financiera" class="module-nav-item" id="nav-mod-financiera" title="Financiera">
+            <i class="fa-solid fa-calculator"></i>
+            <span>Financiera</span>
+          </a>
+          <a href="#/bancos" class="module-nav-item" id="nav-mod-bancos" title="Bancos">
+            <i class="fa-solid fa-university"></i>
+            <span>Bancos</span>
+          </a>
+          <a href="#/contabilidad" class="module-nav-item" id="nav-mod-contabilidad" title="Contabilidad">
+            <i class="fa-solid fa-book"></i>
+            <span>Contabilidad</span>
+          </a>
+          <a href="#/rrhh" class="module-nav-item" id="nav-mod-rrhh" title="RRHH">
+            <i class="fa-solid fa-user-tie"></i>
+            <span>RRHH</span>
+          </a>
+          <a href="#/documentos" class="module-nav-item" id="nav-mod-documentos" title="Documentos">
+            <i class="fa-solid fa-folder-tree"></i>
+            <span>Documentos</span>
+          </a>
+          <a href="#/agenda" class="module-nav-item" id="nav-mod-agenda" title="Agenda">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Agenda</span>
+          </a>
+          <a href="#/tickets" class="module-nav-item" id="nav-mod-tickets" title="Tickets">
+            <i class="fa-solid fa-life-ring"></i>
+            <span>Tickets</span>
+          </a>
+          <a href="#/utilidades" class="module-nav-item" id="nav-mod-utilidades" title="Utilidades">
+            <i class="fa-solid fa-tags"></i>
+            <span>Utilidades</span>
+          </a>
+          <a href="#/sitios" class="module-nav-item" id="nav-mod-sitios" title="Sitios WEB">
+            <i class="fa-solid fa-globe"></i>
+            <span>Sitios WEB</span>
+          </a>
+          <a href="#/tpv" class="module-nav-item" id="nav-mod-tpv" title="TPV TakePOS">
+            <i class="fa-solid fa-cash-register"></i>
+            <span>TPV</span>
+          </a>
+        </nav>
+      </div>
+      <button class="nav-scroll-btn nav-scroll-right" id="nav-scroll-right" title="Desplazar derecha"><i class="fas fa-chevron-right"></i></button>
+
+      <!-- Menú de Usuario / Derecha -->
+      <div class="navbar-right">
+        
+        <!-- Buscador Estético -->
+        <div class="navbar-search">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Buscar registros...">
+        </div>
+        
+        <!-- Perfil con Desplegable -->
+        <div class="user-profile" id="user-menu-trigger">
+          <div class="user-trigger">
+            <div class="user-avatar" id="logged-user-avatar">AD</div>
+            <div class="user-info">
+              <span class="user-name" id="logged-user-name">Administrador</span>
+              <span class="user-role" id="logged-user-role">Super Admin</span>
+            </div>
+            <i class="fas fa-chevron-down" style="font-size: 10px; color: var(--text-navbar-inactive);"></i>
+          </div>
+          
+          <div class="user-dropdown" id="user-menu-dropdown">
+            <div class="dropdown-item">
+              <i class="fas fa-user-circle"></i> Mi Perfil
+            </div>
+            <div class="dropdown-item">
+              <i class="fas fa-slider"></i> Preferencias
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="dropdown-item text-danger" id="logout-btn">
+              <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+    </header>
+
+    <!-- Contenedor Principal (Sidebar + Main Content) -->
+    <div id="main-container">
+      
+      <!-- Sidebar Izquierdo Dinámico -->
+      <aside id="left-sidebar">
+        <!-- Renderizado dinámicamente en router.js -->
+      </aside>
+
+      <!-- Panel de Contenido -->
+      <main id="main-content">
+        <!-- Carga dinámica del módulo seleccionado -->
+      </main>
+
+    </div>
+    
+  </div>
+
+  <!-- Contenedor Toast para Notificaciones -->
+  <div id="toast-container"></div>
+
+  <!-- Scripts del Sistema -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/router.js"></script>
+
+</body>
+</html>

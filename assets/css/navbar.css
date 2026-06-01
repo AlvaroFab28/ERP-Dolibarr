@@ -1,0 +1,393 @@
+/**
+ * navbar.css - Estilos de la barra de navegación superior y barra lateral izquierda
+ * Prototipo Dolibarr ERP v23.0.1
+ */
+
+/* Barra de Navegación Superior */
+#top-navbar {
+  height: 60px;
+  background-color: var(--bg-header);
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: var(--shadow-md);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+/* Marca / Logo */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-white);
+  font-weight: 700;
+  font-size: 16px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.navbar-brand:hover {
+  color: var(--text-white);
+  text-decoration: none;
+}
+
+.navbar-brand img {
+  height: 32px;
+  width: auto;
+}
+
+/* Selector/Etiqueta de la Empresa */
+.navbar-company {
+  font-size: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Contenedor Horizontal de Módulos (Menú Principal) */
+.navbar-modules-wrapper {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  scrollbar-width: none; /* Firefox */
+}
+
+.navbar-modules-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.navbar-modules {
+  display: flex;
+  height: 100%;
+}
+
+.module-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  height: 100%;
+  color: var(--text-navbar-inactive);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  gap: 4px;
+  border-bottom: 3px solid transparent;
+  transition: var(--transition-base);
+  min-width: 70px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.module-nav-item i {
+  font-size: 18px;
+}
+
+.module-nav-item:hover {
+  color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+}
+
+.module-nav-item.active {
+  color: var(--text-white);
+  border-bottom-color: var(--primary);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Área de Usuario / Derecha */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: 20px;
+  flex-shrink: 0;
+}
+
+/* Buscador Rápido */
+.navbar-search {
+  position: relative;
+}
+
+.navbar-search input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 6px 14px 6px 32px;
+  color: var(--text-white);
+  font-size: 13px;
+  width: 160px;
+  transition: var(--transition-base);
+}
+
+.navbar-search input:focus {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  outline: none;
+  border-color: var(--primary);
+  width: 220px;
+}
+
+.navbar-search i {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-navbar-inactive);
+  pointer-events: none;
+}
+
+/* Perfil de Usuario */
+.user-profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: var(--text-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.user-name {
+  font-weight: 600;
+}
+
+.user-role {
+  color: var(--text-navbar-inactive);
+  font-size: 10px;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  width: 200px;
+  box-shadow: var(--shadow-lg);
+  display: none;
+  flex-direction: column;
+  padding: 6px 0;
+  z-index: 110;
+}
+
+.user-dropdown.show {
+  display: flex;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: var(--text-main);
+  font-size: 13px;
+  transition: var(--transition-base);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: var(--bg-body);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 6px 0;
+}
+
+.dropdown-item.text-danger:hover {
+  color: var(--danger);
+  background-color: var(--danger-light);
+}
+
+
+/* BARRA LATERAL IZQUIERDA (Sidebar) */
+#left-sidebar {
+  width: 240px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow-y: auto;
+  transition: var(--transition-base);
+}
+
+.sidebar-title {
+  padding: 16px 20px 8px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.sidebar-menu {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 8px 16px 8px;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  color: var(--text-main);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.sidebar-link-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-link-content i {
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+  color: var(--text-muted);
+  transition: var(--transition-base);
+}
+
+.sidebar-link:hover {
+  background-color: var(--bg-body);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.sidebar-link:hover i {
+  color: var(--primary);
+}
+
+.sidebar-link.active {
+  background-color: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.sidebar-link.active i {
+  color: var(--primary);
+}
+
+/* Sub-ítems en Sidebar */
+.sidebar-sub-menu {
+  list-style: none;
+  padding-left: 28px;
+  margin-top: 2px;
+  margin-bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-sub-link {
+  display: block;
+  padding: 6px 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.sidebar-sub-link:hover {
+  background-color: var(--bg-body);
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.sidebar-sub-link.active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Contador en Items de Menú */
+.menu-counter {
+  font-size: 10px;
+  background-color: var(--border-color);
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.sidebar-link.active .menu-counter {
+  background-color: var(--primary);
+  color: var(--text-white);
+}
+
+/* Botones de Desplazamiento Horizontal en Navbar */
+.nav-scroll-btn {
+  background: none;
+  border: none;
+  color: var(--text-navbar-inactive);
+  cursor: pointer;
+  height: 100%;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-base);
+  font-size: 14px;
+  z-index: 5;
+}
+
+.nav-scroll-btn:hover {
+  color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-scroll-btn:focus {
+  outline: none;
+}
+
