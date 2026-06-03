@@ -215,7 +215,7 @@ window.DolibarrModules.inicio = {
                   </tr>
                 </thead>
                 <tbody>
-                  ${db.proyectos.projects.slice(0, 3).map(p => {
+                  ${db.proyectos.projects.slice(0, 5).map(p => {
                     const tercero = db.terceros.find(t => t.id === p.terceroId) || { name: 'Desconocido' };
                     return `
                       <tr onclick="window.location.hash='#/proyectos'">
@@ -239,7 +239,7 @@ window.DolibarrModules.inicio = {
     document.getElementById('btn-reset-db').addEventListener('click', () => {
       if (confirm("¿Estás seguro de que deseas restablecer los datos del prototipo? Se perderán todos los cambios guardados.")) {
         window.DolibarrDB.reset();
-        window.DolibarrUtils.showToast("Base de datos restablecida correctamente.", "info");
+        window.DolibarrUtils.showToast("Base de datos restablecida con datos masivos de demostración.", "info");
         // Forzar recarga del Dashboard
         this.renderDashboard(container);
       }
@@ -255,11 +255,33 @@ window.DolibarrModules.inicio = {
   initCharts: function(db) {
     if (typeof Chart === 'undefined') return;
 
-    // Gráfico 1: Barras (Ventas vs Compras)
-    const labels1 = ['Marzo', 'Abril', 'Mayo'];
-    // Datos calculados o simulados rápidos de facturas clientes vs proveedores por mes
-    const datasetVentas = [25000, 38000, 115200];
-    const datasetCompras = [12000, 15000, 64975];
+    // Gráfico 1: Barras (Ventas vs Compras dinámico de los últimos 6 meses)
+    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const today = new Date("2026-06-03"); // Fecha base del sistema para el prototipo
+    const labels1 = [];
+    const datasetVentas = [];
+    const datasetCompras = [];
+
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const year = d.getFullYear();
+      const monthNum = d.getMonth();
+      const monthStr = String(monthNum + 1).padStart(2, '0');
+
+      labels1.push(`${monthNames[monthNum]} ${year}`);
+
+      // Ventas facturadas en este mes
+      const salesSum = db.financiera.facturas_cliente
+        .filter(f => f.date.startsWith(`${year}-${monthStr}`))
+        .reduce((sum, f) => sum + f.total_ttc, 0);
+      datasetVentas.push(parseFloat(salesSum.toFixed(2)));
+
+      // Compras/Gastos facturados en este mes
+      const purchasesSum = db.financiera.facturas_proveedor
+        .filter(f => f.date.startsWith(`${year}-${monthStr}`))
+        .reduce((sum, f) => sum + f.total_ttc, 0);
+      datasetCompras.push(parseFloat(purchasesSum.toFixed(2)));
+    }
 
     window.DolibarrCharts.createBar('chart-ventas-compras', labels1, [
       {
@@ -283,11 +305,10 @@ window.DolibarrModules.inicio = {
       return b.balance;
     });
 
-    window.DolibarrCharts.createDoughnut('chart-bancos-dist', labels2, dataSaldosBs, [
-      '#2CB57E', // BNB Green
-      '#3498DB', // BMSC Blue
-      '#F39C12'  // Caja Chica Orange
-    ]);
+    const colors = ['#2CB57E', '#3498DB', '#F39C12', '#9B59B6', '#E74C3C'];
+    const backgroundColors = db.bancos.map((b, idx) => colors[idx % colors.length]);
+
+    window.DolibarrCharts.createDoughnut('chart-bancos-dist', labels2, dataSaldosBs, backgroundColors);
   },
 
   /**

@@ -795,7 +795,7 @@ window.DolibarrModules.contabilidad = {
     addRow();
 
     // Sumar y cuadrar balance
-    const recalcBalance = () => {
+    function recalcBalance() {
       const rows = document.querySelectorAll('.asiento-line-row');
       let totalD = 0;
       let totalH = 0;
@@ -838,7 +838,7 @@ window.DolibarrModules.contabilidad = {
           alertBox.innerHTML = `<i class="fas fa-triangle-exclamation" style="font-size:18px;"></i> <span>Asiento descuadrado. Diferencia de: <strong>${window.DolibarrUtils.formatCurrency(diff)}</strong></span>`;
         }
       }
-    };
+    }
 
     btnAdd.addEventListener('click', addRow);
 

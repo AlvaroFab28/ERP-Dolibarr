@@ -247,8 +247,7 @@ const initialData = {
 function getDB() {
   const dbStr = localStorage.getItem(STORAGE_KEY);
   if (!dbStr) {
-    saveDB(initialData);
-    return JSON.parse(JSON.stringify(initialData));
+    return generateMassiveData();
   }
   try {
     const db = JSON.parse(dbStr);
@@ -379,21 +378,1085 @@ function getDB() {
 /**
  * Guardar la base de datos en localStorage.
  */
+/**
+ * Genera una base de datos masiva y realista localizada para Bolivia.
+ */
+function generateMassiveData() {
+  const db = {
+    company: JSON.parse(JSON.stringify(initialData.company)),
+    currentUser: null,
+    terceros: [],
+    contacts: [],
+    products: [],
+    commercial: {
+      presupuestos: [],
+      pedidos: [],
+      contratos: []
+    },
+    financiera: {
+      facturas_cliente: [],
+      facturas_proveedor: [],
+      pagos: [],
+      prestamos: [],
+      pagos_varios: []
+    },
+    bancos: [
+      { id: 1, label: "Banco Nacional de Bolivia (BNB)", bank_name: "BNB", number: "100-03294821", currency: "Bs", balance: 2500000.00, type: "corriente" },
+      { id: 2, label: "Banco Mercantil Santa Cruz (BMSC) USD", bank_name: "BMSC", number: "401-08492023", currency: "USD", balance: 150000.00, type: "ahorros" },
+      { id: 3, label: "Caja Chica Central", bank_name: "Caja Fuerte", number: "Caja-01", currency: "Bs", balance: 30000.00, type: "efectivo" }
+    ],
+    contabilidad: {
+      diario: []
+    },
+    rrhh: {
+      employees: [],
+      leaves: [],
+      expenses: [],
+      payroll_payments: [],
+      puestos: [],
+      applications: []
+    },
+    mrp: JSON.parse(JSON.stringify(initialData.mrp)),
+    agenda: JSON.parse(JSON.stringify(initialData.agenda)),
+    tickets: JSON.parse(JSON.stringify(initialData.tickets)),
+    documentos: JSON.parse(JSON.stringify(initialData.documentos)),
+    miembros: JSON.parse(JSON.stringify(initialData.miembros)),
+    sitios: JSON.parse(JSON.stringify(initialData.sitios)),
+    tpv: JSON.parse(JSON.stringify(initialData.tpv)),
+    warehouses: [
+      { id: 1, label: "Almacén Central El Alto (LP)", location: "Av. 6 de Marzo Nro. 450, El Alto", description: "Almacén principal de distribución de insumos y equipos." },
+      { id: 2, label: "Sucursal Equipetrol (SC)", location: "Calle Los Claveles Nro. 8, Santa Cruz", description: "Sucursal de ventas y showroom de equipos." },
+      { id: 3, label: "Depósito Industrial Vinto (OR)", location: "Zona Industrial Vinto, Oruro", description: "Depósito para almacenamiento a granel y repuestos pesados." },
+      { id: 4, label: "Sucursal Sud Cochabamba (CB)", location: "Av. Heroínas Nro. 120, Cochabamba", description: "Sucursal de ventas regional Cochabamba." },
+      { id: 5, label: "Almacén Frontera Yacuiba (TJ)", location: "Calle Comercio Nro. 24, Yacuiba", description: "Almacén de tránsito fronterizo." }
+    ],
+    warehouse_stocks: [],
+    inventarios: [
+      { id: 1, ref: "INV2606-001", warehouseId: 1, inspector: "Alejandro Mamani", status: "Validado", date: "2026-05-20", adjustments: [{ productId: 1, sysQty: 30, physicalQty: 30, diff: 0 }] }
+    ],
+    envios: [
+      { id: 1, ref: "ENV2606-001", orderRef: "PE2605-001", clientName: "YPFB Corporación S.A.", date: "2026-05-15", method: "Courier Bolivia", tracking: "TRK-YPFB-9021", status: "Entregado" }
+    ],
+    stock_movimientos: []
+  };
+
+  const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const randomFloat = (min, max) => parseFloat((Math.random() * (max - min) + min).toFixed(2));
+  const randomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  const randomNIT = () => String(randomBetween(1000000000, 9999999999));
+  const randomPhone = () => "+591 " + randomBetween(60000000, 79999999);
+
+  const generateRandomDate = (startDateStr, endDateStr) => {
+    const start = new Date(startDateStr).getTime();
+    const end = new Date(endDateStr).getTime();
+    const randomTime = start + Math.random() * (end - start);
+    const date = new Date(randomTime);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const companyNames = [
+    "YPFB Chaco S.A.", "YPFB Andina S.A.", "YPFB Transporte S.A.", "Empresa Metalúrgica Vinto", "Pil Andina S.A.",
+    "Cervecería Boliviana Nacional (CBN)", "EMBOL S.A.", "Soboce S.A.", "Itacamba Cemento S.A.", "Minera San Cristóbal S.A.",
+    "Entel Bolivia S.A.", "Telefónica Celular de Bolivia (Tigo)", "Nuevatel PCS (Viva)", "Banco Unión S.A.",
+    "Banco Nacional de Bolivia S.A.", "Banco Mercantil Santa Cruz S.A.", "Banco de Crédito de Bolivia S.A.",
+    "Banco Solidario S.A. (BancoSol)", "Banco BISA S.A.", "Banco Ganadero S.A.", "Farmacias Chávez S.A.",
+    "Farmacias Farmacorp S.A.", "Supermercados Fidalga S.A.", "Supermercados Hipermaxi S.A.", "Supermercados Ketal S.A.",
+    "Ingenio Azucarero Guabirá S.A.", "Ingenio Azucarero Unagro S.A.", "Lácteos de Bolivia (LACTEOSBOL)",
+    "Empresa de Apoyo a la Producción de Alimentos (EMAPA)", "Quipus Empresa Pública Productiva", "Boliviana de Aviación (BoA)",
+    "Transportes Aéreos Bolivianos (TAB)", "Ferroviaria Oriental S.A.", "Ferroviaria Andina S.A.", "Cobee S.A.",
+    "Ende Transmisión S.A.", "Ende Andina S.A.", "Cre Cooperativa Rural de Electrificación", "Elfec S.A.",
+    "Delapaz S.A.", "Saguapac", "Epsas La Paz", "Semapa Cochabamba", "Toyota Toyosa S.A.", "Imcruz SRL",
+    "Christian Automotors S.A.", "Hansa Limitada", "Droguería INTI S.A.", "Laboratorios IFA S.A.", "Laboratorios Bagó de Bolivia S.A."
+  ];
+
+  // 1. Generate Terceros
+  for (let i = 1; i <= 50; i++) {
+    const name = companyNames[i - 1] || `Empresa Industrial Boliviana ${i}`;
+    let type = "cliente";
+    if (i > 25 && i <= 40) type = "proveedor";
+    else if (i > 40) type = "ambos";
+
+    const depts = ["La Paz", "Santa Cruz", "Cochabamba", "Oruro", "Tarija", "Sucre", "Potosí"];
+    const dept = randomElement(depts);
+    const address = `Av. Principal Nro. ${randomBetween(10, 999)}, Zona Central, ${dept}`;
+
+    db.terceros.push({
+      id: i,
+      name: name,
+      nit: randomNIT(),
+      type: type,
+      address: address,
+      phone: randomPhone(),
+      email: `contacto@${name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com.bo`,
+      status: "activo",
+      balance: 0.00
+    });
+  }
+
+  // 2. Generate Contacts
+  const firstNames = ["Juan", "Maria", "Carlos", "Ana", "Luis", "Jose", "Daniela", "Fernando", "Camila", "Jorge", "Patricia", "Roberto", "Elizabeth", "Gonzalo", "Gabriela", "Ramiro", "Sandra", "Hugo", "Claudia", "René", "Walter", "Lidia", "Óscar", "Silvia", "Julio", "Mónica", "Ricardo", "Cecilia", "Víctor", "Verónica"];
+  const lastNames = ["Quispe", "Mamani", "Flores", "Condori", "Vargas", "Rojas", "Guzmán", "Pinto", "Torres", "Suárez", "Mendoza", "Ortiz", "Gutiérrez", "Chavez", "Heredia", "Alanza", "Copa", "Valdez", "Villegas", "Morales", "López", "Cardozo", "Salazar", "Rios", "Espinoza", "Sánchez", "Castro", "Romero", "Paz", "Peredo"];
+  const roles = ["Gerente General", "Encargado de Adquisiciones", "Jefe de Contabilidad", "Director Comercial", "Asistente Técnico", "Administrador de Sistemas", "Gerente de Finanzas", "Responsable de Compras", "Director de Operaciones", "Asistente de Gerencia"];
+
+  for (let i = 1; i <= 100; i++) {
+    const fn = randomElement(firstNames);
+    const ln = randomElement(lastNames);
+    const tercero = randomElement(db.terceros);
+    db.contacts.push({
+      id: i,
+      terceroId: tercero.id,
+      first_name: fn,
+      last_name: ln,
+      email: `${fn.toLowerCase()}.${ln.toLowerCase()}@${tercero.name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com.bo`,
+      phone: randomPhone(),
+      role: randomElement(roles)
+    });
+  }
+
+  // 3. Products & Services
+  const productLabels = [
+    "Válvula de Bola de Acero Inoxidable 2\"", "Válvula de Compuerta Bridadada 4\"", "Tubería de Acero Galvanizado 2\" (6m)",
+    "Tubería de Alta Presión de Cobre 1\"", "Motor Eléctrico Monofásico 2HP", "Bomba de Agua Centrífuga 5HP",
+    "Tablero Eléctrico de Distribución IP65", "Cable de Cobre Multipolar Nro 10 (100m)", "Disyuntor Termomagnético 3P 50A",
+    "Pintura Industrial Anticorrosiva (Balde)", "Grasa de Litio Multiuso 20kg", "Perno Hexagonal de Alta Resistencia 1/2\" (Paquete)",
+    "Plancha de Acero A36 (1.2x2.4m)", "Electrodo de Soldadura Arco E6011 (Caja)", "Manómetro de Presión Digital",
+    "Casco de Seguridad Industrial (Amarillo)", "Botas de Seguridad con Punta de Acero", "Guantes de Nitrilo Industrial (Paquete)",
+    "Filtro de Aire Industrial Tipo Cartucho", "Compresor de Aire Portátil 50L", "Generador Eléctrico a Gasolina 3kW",
+    "Transmisor de Presión Inteligente Hart", "PLC Siemens Simatic S7-1200", "Módulo de Expansión de E/S PLC",
+    "Sensor de Temperatura PT100", "Cable de Fibra Óptica Monomodo (Carrete)", "Conector Rápido Hidráulico 1/2\"",
+    "Brida de Acero Cuello Soldable 6\"", "Codo de Acero 90 Grados 4\"", "Reducción Concéntrica de Acero 4\" a 2\"",
+    "Válvula de Retención tipo Clapeta 3\"", "Cinta de Teflón Industrial (Paquete)", "Llave de Paso de Bronce 1/2\"",
+    "Soporte de Tubería Metálico Reforzado", "Silicona Industrial de Alta Temperatura", "Limpiador de Contactos Electrónicos (Aerosol)",
+    "Filtro de Aceite para Compresora", "Correa de Transmisión Dentada V", "Rodamiento de Esferas Blindado SKF",
+    "Tuerca Hexagonal Galvanizada 1/2\" (Paquete)", "Arandela de Presión 1/2\" (Paquete)", "Tee de Acero Carbono 3\"",
+    "Válvula Reguladora de Flujo de Aguja", "Termómetro Infrarrojo Industrial", "Multímetro Digital Profesional Fluke",
+    "Pinza Amperimétrica de Alta Precisión", "Extractor de Aire Industrial Axial", "Lámpara LED de Alta Bahía 100W",
+    "Caja de Empalme Eléctrico Estanca", "Terminal de Compresión para Cable", "Tubería Corrugada para Cables (50m)",
+    "Detector de Fugas de Gas Portátil", "Cilindro Neumático de Doble Efecto", "Electroválvula Neumática 5/2 24VDC",
+    "Filtro Regulador Lubricador (FRL) Neumático", "Manguera de Poliuretano para Aire 8mm (50m)", "Conector Neumático Instantáneo (Paquete)",
+    "Acoplamiento Flexible para Eje", "Empacadura de Neopreno para Brida 4\"", "Sellador de Roscas Anaeróbico",
+    "Broca de Acero Rápido HSS (Juego)", "Disco de Corte para Metal 4-1/2\" (Paquete)", "Disco de Desbaste para Metal 4-1/2\" (Paquete)",
+    "Cepillo de Alambre Circular para Amoladora", "Arnés de Seguridad de Cuerpo Completo", "Eslinga de Carga de Poliéster 3t (4m)",
+    "Grillete de Acero Galvanizado 5/8\"", "Tensor de Cadena Mecánico", "Polipasto Manual de Cadena 1t",
+    "Cinta de Embalaje Transparente (Paquete)", "Film Estirable para Paletizado (Rollo)", "Bandeja Portacables Tipo Escalera (3m)",
+    "Interruptor Termomagnético Riel Din", "Contactores Eléctricos 3P 220VAC", "Relé Térmico de Sobrecarga",
+    "Pulsador de Parada de Emergencia", "Luz Piloto Indicadora LED 22V", "Canaleta Ranurada para Tablero (2m)",
+    "Bornes de Conexión Riel Din (Paquete)", "Marcadores de Cable Termocontraíble"
+  ];
+
+  const serviceLabels = [
+    "Servicio de Inspección Ultrasónica de Ductos", "Mantenimiento Preventivo de Compresor de Aire",
+    "Instalación de Tableros Eléctricos y Acometidas", "Calibración de Manómetros e Instrumentos",
+    "Certificación de Seguridad y Estanqueidad API", "Desarrollo de Pantalla SCADA en WinCC",
+    "Programación de PLC Siemens y HMI", "Capacitación en Seguridad y Salud Ocupacional",
+    "Servicio de Alineación Láser de Motores", "Análisis de Vibraciones en Maquinaria Rotativa",
+    "Limpieza Química de Intercambiadores de Calor", "Montaje de Estructuras Metálicas por Día",
+    "Consultoría en Eficiencia Energética", "Diseño de Sistemas Contra Incendios NFPA",
+    "Auditoría Técnica de Instalaciones Eléctricas", "Servicio Técnico de Emergencia 24/7 (Hora)",
+    "Alquiler de Generador Eléctrico 50kVA (Día)", "Alquiler de Camión Grúa con Operador (Día)",
+    "Servicio de Termografía Infrarroja en Tableros", "Puesta en Marcha de Sistemas de Automatización"
+  ];
+
+  // 80 Products
+  for (let i = 1; i <= 80; i++) {
+    const label = productLabels[i - 1] || `Producto Industrial Genérico ${i}`;
+    const price = randomFloat(100.00, 15000.00);
+    const cost = parseFloat((price * randomFloat(0.5, 0.75)).toFixed(2));
+    const minStock = randomBetween(5, 20);
+
+    db.products.push({
+      id: i,
+      code: `PROD-${label.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, '')}-${String(100 + i)}`,
+      label: label,
+      type: "producto",
+      price: price,
+      cost: cost,
+      stock: 0,
+      minStock: minStock,
+      description: `${label} diseñado para uso industrial exigente, cumple con certificaciones internacionales.`
+    });
+  }
+
+  // 20 Services
+  for (let i = 81; i <= 100; i++) {
+    const label = serviceLabels[i - 81] || `Servicio Técnico Especializado ${i - 80}`;
+    const price = randomFloat(400.00, 5000.00);
+    const cost = parseFloat((price * randomFloat(0.4, 0.6)).toFixed(2));
+
+    db.products.push({
+      id: i,
+      code: `SERV-${label.substring(0, 4).toUpperCase().replace(/[^A-Z]/g, '')}-${String(100 + i)}`,
+      label: label,
+      type: "servicio",
+      price: price,
+      cost: cost,
+      stock: 0,
+      minStock: 0,
+      description: `${label}. Tarifa de servicio profesional con personal certificado e instrumentos calibrados.`
+    });
+  }
+
+  // Stock allocation & movements
+  let movId = 1;
+  db.products.forEach(p => {
+    if (p.type === 'producto') {
+      let totalStock = 0;
+      db.warehouses.forEach(w => {
+        if (Math.random() < 0.75) {
+          const qty = randomBetween(5, 80);
+          db.warehouse_stocks.push({
+            productId: p.id,
+            warehouseId: w.id,
+            qty: qty
+          });
+          totalStock += qty;
+
+          db.stock_movimientos.push({
+            id: movId++,
+            productId: p.id,
+            originWarehouseId: null,
+            targetWarehouseId: w.id,
+            qty: qty,
+            type: "Entrada Inicial",
+            date: "2025-12-01"
+          });
+        }
+      });
+      p.stock = totalStock;
+    }
+  });
+
+  // 4. Commercial (Presupuestos, Pedidos, Contratos)
+  const clientTerceros = db.terceros.filter(t => t.type === 'cliente' || t.type === 'ambos');
+  const providerTerceros = db.terceros.filter(t => t.type === 'proveedor' || t.type === 'ambos');
+
+  for (let i = 1; i <= 150; i++) {
+    const t = randomElement(clientTerceros);
+    const date = generateRandomDate("2025-12-01", "2026-05-31");
+    const r = Math.random();
+    let status = "Borrador";
+    if (r < 0.50) status = "Aceptado";
+    else if (r < 0.70) status = "Validado";
+    else if (r < 0.85) status = "Rechazado";
+
+    const lineCount = randomBetween(1, 4);
+    const lines = [];
+    let total_ht = 0;
+    const selectedProdIds = new Set();
+
+    for (let l = 0; l < lineCount; l++) {
+      let prod = randomElement(db.products);
+      while (selectedProdIds.has(prod.id)) {
+        prod = randomElement(db.products);
+      }
+      selectedProdIds.add(prod.id);
+
+      const qty = randomBetween(1, 10);
+      const discount = Math.random() < 0.2 ? randomElement([5, 10, 15]) : 0;
+      const lineTotal = qty * prod.price * (1 - discount/100);
+      total_ht += lineTotal;
+
+      lines.push({
+        productId: prod.id,
+        qty: qty,
+        price: prod.price,
+        discount_pct: discount
+      });
+    }
+
+    total_ht = parseFloat(total_ht.toFixed(2));
+    const total_ttc = parseFloat((total_ht * 1.13).toFixed(2));
+    const ref = `PR${date.substring(2,4)}${date.substring(5,7)}-${String(1000 + i).substring(1)}`;
+
+    db.commercial.presupuestos.push({
+      id: i,
+      ref: ref,
+      terceroId: t.id,
+      date: date,
+      total_ht: total_ht,
+      total_ttc: total_ttc,
+      status: status,
+      lines: lines
+    });
+  }
+
+  // Pedidos
+  let orderId = 1;
+  const acceptedBudgets = db.commercial.presupuestos.filter(p => p.status === 'Aceptado');
+  acceptedBudgets.forEach(b => {
+    const pedDate = new Date(b.date);
+    pedDate.setDate(pedDate.getDate() + randomBetween(1, 3));
+    const pedDateStr = pedDate.toISOString().split('T')[0];
+    const isOld = new Date(pedDateStr) < new Date("2026-05-15");
+    const status = isOld ? "Entregado" : randomElement(["Validado", "En proceso", "Entregado"]);
+
+    db.commercial.pedidos.push({
+      id: orderId++,
+      ref: `PE${pedDateStr.substring(2,4)}${pedDateStr.substring(5,7)}-${String(1000 + orderId).substring(1)}`,
+      terceroId: b.terceroId,
+      date: pedDateStr,
+      total_ht: b.total_ht,
+      total_ttc: b.total_ttc,
+      status: status,
+      lines: JSON.parse(JSON.stringify(b.lines))
+    });
+  });
+
+  while (orderId <= 120) {
+    const t = randomElement(clientTerceros);
+    const date = generateRandomDate("2025-12-01", "2026-05-31");
+    const isOld = new Date(date) < new Date("2026-05-15");
+    const status = isOld ? "Entregado" : randomElement(["Validado", "En proceso", "Entregado"]);
+
+    const lineCount = randomBetween(1, 3);
+    const lines = [];
+    let total_ht = 0;
+    const selectedProdIds = new Set();
+
+    for (let l = 0; l < lineCount; l++) {
+      let prod = randomElement(db.products);
+      while (selectedProdIds.has(prod.id)) {
+        prod = randomElement(db.products);
+      }
+      selectedProdIds.add(prod.id);
+
+      const qty = randomBetween(1, 5);
+      const lineTotal = qty * prod.price;
+      total_ht += lineTotal;
+
+      lines.push({
+        productId: prod.id,
+        qty: qty,
+        price: prod.price,
+        discount_pct: 0
+      });
+    }
+
+    total_ht = parseFloat(total_ht.toFixed(2));
+    const total_ttc = parseFloat((total_ht * 1.13).toFixed(2));
+
+    db.commercial.pedidos.push({
+      id: orderId++,
+      ref: `PE${date.substring(2,4)}${date.substring(5,7)}-${String(1000 + orderId).substring(1)}`,
+      terceroId: t.id,
+      date: date,
+      total_ht: total_ht,
+      total_ttc: total_ttc,
+      status: status,
+      lines: lines
+    });
+  }
+
+  // Contratos
+  const contractLabels = [
+    "Mantenimiento de Redes Eléctricas CBN", "Soporte de Equipos Hidráulicos YPFB",
+    "Monitoreo de Sensores Industriales Vinto", "Consultoría Mensual de Sistemas MSC",
+    "Suministro Quincenal de Válvulas y Tuberías", "Soporte de PLC Planta El Alto",
+    "Alquiler de Maquinaria y Equipos de Medición", "Servicios de Outsourcing Técnico"
+  ];
+  for (let i = 1; i <= 20; i++) {
+    const t = randomElement(clientTerceros);
+    const label = randomElement(contractLabels) + ` (Fase ${randomBetween(1, 3)})`;
+    const amount = randomFloat(15000.00, 180000.00);
+    const start = generateRandomDate("2025-06-01", "2026-04-01");
+    const end = new Date(start);
+    end.setMonth(end.getMonth() + randomElement([6, 12, 24]));
+    const endStr = end.toISOString().split('T')[0];
+
+    const today = new Date("2026-06-03");
+    let status = "Activo";
+    if (new Date(endStr) < today) status = "Cerrado";
+    else if (Math.random() < 0.1) status = "Borrador";
+
+    db.commercial.contratos.push({
+      id: i,
+      ref: `CON${start.substring(2,4)}${start.substring(5,7)}-${String(100 + i).substring(1)}`,
+      terceroId: t.id,
+      label: label,
+      monto_bs: amount,
+      start_date: start,
+      end_date: endStr,
+      status: status
+    });
+  }
+
+  // 5. Invoices (Facturas Cliente ~80, Facturas Proveedor ~40)
+  let clientInvoiceId = 1;
+  const orderForInvoices = db.commercial.pedidos.filter(p => p.status === 'Entregado' || (p.status === 'En proceso' && Math.random() < 0.8));
+
+  orderForInvoices.forEach(p => {
+    if (clientInvoiceId > 80) return;
+
+    const invDate = new Date(p.date);
+    invDate.setDate(invDate.getDate() + randomBetween(1, 3));
+    const invDateStr = invDate.toISOString().split('T')[0];
+
+    const dueDate = new Date(invDateStr);
+    dueDate.setDate(dueDate.getDate() + 30);
+    const dueDateStr = dueDate.toISOString().split('T')[0];
+
+    const isOld = new Date(invDateStr) < new Date("2026-05-01");
+    let status = "Pagado";
+    if (!isOld) {
+      status = randomElement(["Validado", "Pago parcial", "Pagado"]);
+    }
+
+    db.financiera.facturas_cliente.push({
+      id: clientInvoiceId++,
+      ref: `FA${invDateStr.substring(2,4)}${invDateStr.substring(5,7)}-${String(1000 + clientInvoiceId).substring(1)}`,
+      terceroId: p.terceroId,
+      date: invDateStr,
+      date_due: dueDateStr,
+      total_ht: p.total_ht,
+      total_ttc: p.total_ttc,
+      status: status,
+      accounting_status: status === "Validado" ? (Math.random() < 0.5 ? "pending" : "posted") : "posted",
+      lines: JSON.parse(JSON.stringify(p.lines))
+    });
+  });
+
+  while (clientInvoiceId <= 80) {
+    const t = randomElement(clientTerceros);
+    const date = generateRandomDate("2025-12-01", "2026-05-31");
+    const dueDate = new Date(date);
+    dueDate.setDate(dueDate.getDate() + 30);
+    const dueDateStr = dueDate.toISOString().split('T')[0];
+
+    const total_ht = randomFloat(2000.00, 35000.00);
+    const total_ttc = parseFloat((total_ht * 1.13).toFixed(2));
+    const isOld = new Date(date) < new Date("2026-05-01");
+    const status = isOld ? "Pagado" : randomElement(["Validado", "Pago parcial", "Pagado"]);
+
+    const prod = randomElement(db.products);
+    const qty = Math.ceil(total_ht / prod.price) || 1;
+    const lines = [{ productId: prod.id, qty: qty, price: prod.price, discount_pct: 0 }];
+
+    db.financiera.facturas_cliente.push({
+      id: clientInvoiceId++,
+      ref: `FA${date.substring(2,4)}${date.substring(5,7)}-${String(1000 + clientInvoiceId).substring(1)}`,
+      terceroId: t.id,
+      date: date,
+      date_due: dueDateStr,
+      total_ht: total_ht,
+      total_ttc: total_ttc,
+      status: status,
+      accounting_status: status === "Validado" ? "pending" : "posted",
+      lines: lines
+    });
+  }
+
+  let provInvoiceId = 1;
+  while (provInvoiceId <= 40) {
+    const t = randomElement(providerTerceros);
+    const date = generateRandomDate("2025-12-01", "2026-05-31");
+    const dueDate = new Date(date);
+    dueDate.setDate(dueDate.getDate() + 30);
+    const dueDateStr = dueDate.toISOString().split('T')[0];
+
+    const total_ht = randomFloat(1500.00, 20000.00);
+    const total_ttc = parseFloat((total_ht * 1.13).toFixed(2));
+    const isOld = new Date(date) < new Date("2026-05-01");
+    const status = isOld ? "Pagado" : randomElement(["Validado", "Pago parcial", "Pagado"]);
+
+    const prod = randomElement(db.products);
+    const qty = Math.ceil(total_ht / prod.cost) || 1;
+    const lines = [{ productId: prod.id, qty: qty, price: prod.cost, discount_pct: 0 }];
+
+    db.financiera.facturas_proveedor.push({
+      id: provInvoiceId++,
+      ref: `FP-${t.name.substring(0,4).toUpperCase().replace(/[^A-Z]/g, '')}-${String(100 + provInvoiceId)}`,
+      terceroId: t.id,
+      date: date,
+      date_due: dueDateStr,
+      total_ht: total_ht,
+      total_ttc: total_ttc,
+      status: status,
+      accounting_status: status === "Validado" ? "pending" : "posted",
+      lines: lines
+    });
+  }
+
+  // 6. Payments
+  let paymentId = 1;
+  db.financiera.facturas_cliente.forEach(f => {
+    if (f.status === 'Pagado') {
+      const pDateStr = new Date(f.date);
+      pDateStr.setDate(pDateStr.getDate() + randomBetween(1, 10));
+      const payDate = pDateStr.toISOString().split('T')[0];
+      const method = randomElement(["Transferencia BNB", "Transferencia BMSC", "Cheque BNB"]);
+
+      db.financiera.pagos.push({
+        id: paymentId++,
+        type: "cliente",
+        ref: `PAG-CL-${String(1000 + paymentId).substring(1)}`,
+        invoiceRef: f.ref,
+        amount: f.total_ttc,
+        date: payDate,
+        method: method
+      });
+
+      let bank = db.bancos.find(b => method.includes(b.bank_name));
+      if (!bank) bank = db.bancos[0];
+      if (bank.currency === 'USD') {
+        bank.balance += parseFloat((f.total_ttc / 6.96).toFixed(2));
+      } else {
+        bank.balance += f.total_ttc;
+      }
+    } else if (f.status === 'Pago parcial') {
+      const pDateStr = new Date(f.date);
+      pDateStr.setDate(pDateStr.getDate() + randomBetween(1, 5));
+      const payDate = pDateStr.toISOString().split('T')[0];
+      const amount = parseFloat((f.total_ttc * randomFloat(0.3, 0.6)).toFixed(2));
+      const method = randomElement(["Transferencia BNB", "Transferencia BMSC", "Efectivo"]);
+
+      db.financiera.pagos.push({
+        id: paymentId++,
+        type: "cliente",
+        ref: `PAG-CL-${String(1000 + paymentId).substring(1)}`,
+        invoiceRef: f.ref,
+        amount: amount,
+        date: payDate,
+        method: method
+      });
+
+      let bank = db.bancos.find(b => method.includes(b.bank_name) || (method === "Efectivo" && b.type === "efectivo"));
+      if (!bank) bank = db.bancos[0];
+      if (bank.currency === 'USD') {
+        bank.balance += parseFloat((amount / 6.96).toFixed(2));
+      } else {
+        bank.balance += amount;
+      }
+    }
+  });
+
+  db.financiera.facturas_proveedor.forEach(f => {
+    if (f.status === 'Pagado') {
+      const pDateStr = new Date(f.date);
+      pDateStr.setDate(pDateStr.getDate() + randomBetween(1, 10));
+      const payDate = pDateStr.toISOString().split('T')[0];
+      const method = randomElement(["Transferencia BNB", "Efectivo"]);
+
+      db.financiera.pagos.push({
+        id: paymentId++,
+        type: "proveedor",
+        ref: `PAG-PR-${String(1000 + paymentId).substring(1)}`,
+        invoiceRef: f.ref,
+        amount: f.total_ttc,
+        date: payDate,
+        method: method
+      });
+
+      let bank = db.bancos.find(b => method.includes(b.bank_name) || (method === "Efectivo" && b.type === "efectivo"));
+      if (!bank) bank = db.bancos[0];
+      if (bank.currency === 'USD') {
+        bank.balance -= parseFloat((f.total_ttc / 6.96).toFixed(2));
+      } else {
+        bank.balance -= f.total_ttc;
+      }
+    } else if (f.status === 'Pago parcial') {
+      const pDateStr = new Date(f.date);
+      pDateStr.setDate(pDateStr.getDate() + randomBetween(1, 5));
+      const payDate = pDateStr.toISOString().split('T')[0];
+      const amount = parseFloat((f.total_ttc * randomFloat(0.3, 0.6)).toFixed(2));
+      const method = randomElement(["Transferencia BNB", "Efectivo"]);
+
+      db.financiera.pagos.push({
+        id: paymentId++,
+        type: "proveedor",
+        ref: `PAG-PR-${String(1000 + paymentId).substring(1)}`,
+        invoiceRef: f.ref,
+        amount: amount,
+        date: payDate,
+        method: method
+      });
+
+      let bank = db.bancos.find(b => method.includes(b.bank_name) || (method === "Efectivo" && b.type === "efectivo"));
+      if (!bank) bank = db.bancos[0];
+      if (bank.currency === 'USD') {
+        bank.balance -= parseFloat((amount / 6.96).toFixed(2));
+      } else {
+        bank.balance -= amount;
+      }
+    }
+  });
+
+  // Calculate Terceros Balances
+  db.terceros.forEach(t => {
+    let balance = 0;
+    db.financiera.facturas_cliente.forEach(f => {
+      if (f.terceroId === t.id) balance += f.total_ttc;
+    });
+    db.financiera.facturas_proveedor.forEach(f => {
+      if (f.terceroId === t.id) balance -= f.total_ttc;
+    });
+    db.financiera.pagos.forEach(p => {
+      if (p.type === 'cliente') {
+        const inv = db.financiera.facturas_cliente.find(fc => fc.ref === p.invoiceRef);
+        if (inv && inv.terceroId === t.id) balance -= p.amount;
+      } else if (p.type === 'proveedor') {
+        const inv = db.financiera.facturas_proveedor.find(fp => fp.ref === p.invoiceRef);
+        if (inv && inv.terceroId === t.id) balance += p.amount;
+      }
+    });
+    t.balance = parseFloat(balance.toFixed(2));
+  });
+
+  // 7. Pagos Varios & Préstamos
+  for (let i = 1; i <= 30; i++) {
+    const label = randomElement(basicServLabels);
+    let category = "Otros";
+    if (label.includes("Electricidad") || label.includes("Agua") || label.includes("Internet") || label.includes("Gas")) {
+      category = "Servicios Básicos";
+    } else if (label.includes("Alquiler")) {
+      category = "Alquileres";
+    } else if (label.includes("Patentes") || label.includes("Impuestos")) {
+      category = "Impuestos";
+    } else if (label.includes("Papelería") || label.includes("Librería")) {
+      category = "Material de Escritorio";
+    } else if (label.includes("Publicitaria") || label.includes("Sociales")) {
+      category = "Publicidad y Marketing";
+    } else if (label.includes("Seguro")) {
+      category = "Seguros";
+    } else {
+      category = "Mantenimiento Oficina";
+    }
+
+    const amount = randomFloat(100.00, 6000.00);
+    const date = generateRandomDate("2025-12-01", "2026-05-31");
+    const bank = randomElement(db.bancos);
+    const method = bank.type === 'efectivo' ? "Efectivo / Caja" : `Transferencia ${bank.bank_name}`;
+
+    db.financiera.pagos_varios.push({
+      id: i,
+      ref: `VAR${date.substring(2,4)}${date.substring(5,7)}-${String(100 + i).substring(1)}`,
+      label: label,
+      category: category,
+      amount_bs: amount,
+      date: date,
+      bankId: bank.id,
+      method: method
+    });
+
+    if (bank.currency === 'USD') {
+      bank.balance -= parseFloat((amount / 6.96).toFixed(2));
+    } else {
+      bank.balance -= amount;
+    }
+  }
+
+  const lenders = ["Banco Nacional de Bolivia", "Banco Mercantil Santa Cruz", "Banco BISA S.A.", "Banco Unión S.A."];
+  for (let i = 1; i <= 5; i++) {
+    const lender = lenders[i - 1] || "Banco Central";
+    const amount = randomFloat(50000.00, 250000.00);
+    const term = randomElement([12, 24, 36, 48]);
+    const rate = randomFloat(5.5, 9.5);
+    const date = generateRandomDate("2025-06-01", "2026-01-01");
+    const balance = parseFloat((amount * randomFloat(0.5, 0.9)).toFixed(2));
+
+    db.financiera.prestamos.push({
+      id: i,
+      ref: `PRE25${String(10 + i)}-${String(100 + i).substring(1)}`,
+      lender: lender,
+      amount_bs: amount,
+      interest_rate_pct: rate,
+      term_months: term,
+      monthly_payment_bs: parseFloat((amount / term * (1 + rate/100)).toFixed(2)),
+      balance_bs: balance,
+      date: date,
+      status: "Activo",
+      bankId: randomElement([1, 2])
+    });
+  }
+
+  // 8. Contabilidad (Libro Diario)
+  let journalId = 1;
+  const addLedgerEntry = (date, ref, desc, account, debit, credit, journal) => {
+    db.contabilidad.diario.push({
+      id: journalId++,
+      date: date,
+      ref: ref,
+      desc: desc,
+      account: account,
+      debit: parseFloat(debit.toFixed(2)),
+      credit: parseFloat(credit.toFixed(2)),
+      journal: journal
+    });
+  };
+
+  db.financiera.facturas_cliente.forEach(f => {
+    if (f.accounting_status === 'posted') {
+      const isServ = f.lines && f.lines[0] && f.lines[0].productId >= 81 || false;
+      const saleAccount = isServ ? "401000 - Ingresos por Servicios" : "400000 - Ventas de Productos";
+      const iva = parseFloat((f.total_ttc - f.total_ht).toFixed(2));
+      const client = db.terceros.find(t => t.id === f.terceroId) || { name: "Cliente" };
+
+      addLedgerEntry(f.date, f.ref, `Venta a ${client.name}`, "120000 - Clientes (Cuentas por Cobrar)", f.total_ttc, 0, "Ventas");
+      addLedgerEntry(f.date, f.ref, `Venta a ${client.name}`, saleAccount, 0, f.total_ht, "Ventas");
+      if (iva > 0) {
+        addLedgerEntry(f.date, f.ref, `Débito Fiscal IVA 13% - ${f.ref}`, "213010 - Débito Fiscal IVA", 0, iva, "Ventas");
+      }
+    }
+  });
+
+  db.financiera.pagos.forEach(p => {
+    if (p.type === 'cliente') {
+      const inv = db.financiera.facturas_cliente.find(f => f.ref === p.invoiceRef);
+      const clientName = inv ? (db.terceros.find(t => t.id === inv.terceroId) || { name: "Cliente" }).name : "Cliente";
+      let account = "111100 - Caja/Banco BNB";
+      if (p.method.includes("BMSC")) account = "111200 - Caja/Banco BMSC";
+      else if (p.method.includes("Efectivo")) account = "111300 - Caja Chica";
+
+      addLedgerEntry(p.date, p.ref, `Cobro factura ${p.invoiceRef} - ${clientName}`, account, p.amount, 0, "Bancos");
+      addLedgerEntry(p.date, p.ref, `Abono de cliente - ${clientName}`, "120000 - Clientes (Cuentas por Cobrar)", 0, p.amount, "Bancos");
+    }
+  });
+
+  db.financiera.facturas_proveedor.forEach(f => {
+    if (f.accounting_status === 'posted') {
+      const iva = parseFloat((f.total_ttc - f.total_ht).toFixed(2));
+      const provider = db.terceros.find(t => t.id === f.terceroId) || { name: "Proveedor" };
+
+      addLedgerEntry(f.date, f.ref, `Compra de ${provider.name}`, "501000 - Gastos de Administración (Servicios / Compras)", f.total_ht, 0, "Compras");
+      if (iva > 0) {
+        addLedgerEntry(f.date, f.ref, `Crédito Fiscal IVA 13% - ${f.ref}`, "113010 - Crédito Fiscal IVA", iva, 0, "Compras");
+      }
+      addLedgerEntry(f.date, f.ref, `Obligación con ${provider.name}`, "211000 - Proveedores (Cuentas por Pagar)", 0, f.total_ttc, "Compras");
+    }
+  });
+
+  db.financiera.pagos.forEach(p => {
+    if (p.type === 'proveedor') {
+      const inv = db.financiera.facturas_proveedor.find(f => f.ref === p.invoiceRef);
+      const provName = inv ? (db.terceros.find(t => t.id === inv.terceroId) || { name: "Proveedor" }).name : "Proveedor";
+      let account = "111100 - Caja/Banco BNB";
+      if (p.method.includes("BMSC")) account = "111200 - Caja/Banco BMSC";
+      else if (p.method.includes("Efectivo")) account = "111300 - Caja Chica";
+
+      addLedgerEntry(p.date, p.ref, `Pago factura ${p.invoiceRef} - ${provName}`, "211000 - Proveedores (Cuentas por Pagar)", p.amount, 0, "Bancos");
+      addLedgerEntry(p.date, p.ref, `Egreso por pago - ${provName}`, account, 0, p.amount, "Bancos");
+    }
+  });
+
+  db.financiera.pagos_varios.forEach(p => {
+    let expAccount = "501000 - Gastos de Administración (Servicios / Compras)";
+    if (p.category === "Alquileres") expAccount = "503000 - Gastos de Alquiler";
+    else if (p.category === "Servicios Básicos") expAccount = "502000 - Gastos de Servicios Básicos";
+    else if (p.category === "Impuestos") expAccount = "504000 - Gastos Tributarios / Patentes";
+    else if (p.category === "Material de Escritorio") expAccount = "505000 - Gastos de Escritorio y Papelería";
+    else if (p.category === "Publicidad y Marketing") expAccount = "506000 - Gastos de Publicidad";
+    else if (p.category === "Seguros") expAccount = "507000 - Gastos de Seguros";
+
+    let bankAccount = "111100 - Caja/Banco BNB";
+    if (p.bankId === 2) bankAccount = "111200 - Caja/Banco BMSC";
+    else if (p.bankId === 3) bankAccount = "111300 - Caja Chica";
+
+    addLedgerEntry(p.date, p.ref, p.label, expAccount, p.amount_bs, 0, "Varios");
+    addLedgerEntry(p.date, p.ref, `Pago de ${p.label}`, bankAccount, 0, p.amount_bs, "Varios");
+  });
+
+  // 9. RRHH
+  const rrhhRoles = [
+    { title: "Ingeniero de Automatización Senior", dept: "La Paz", sal: 14000.00 },
+    { title: "Técnico en Electricidad Industrial", dept: "La Paz", sal: 7500.00 },
+    { title: "Soldador de Alta Presión", dept: "Oruro", sal: 8500.00 },
+    { title: "Operador de Torno Mecánico", dept: "Oruro", sal: 6500.00 },
+    { title: "Asistente de Contabilidad", dept: "La Paz", sal: 5000.00 },
+    { title: "Ejecutivo de Ventas Corporativas", dept: "Santa Cruz", sal: 9000.00 },
+    { title: "Chofer de Distribución", dept: "Cochabamba", sal: 4800.00 },
+    { title: "Jefe de Almacén Sucursal", dept: "Santa Cruz", sal: 7000.00 },
+    { title: "Supervisor de Seguridad Industrial", dept: "La Paz", sal: 8000.00 },
+    { title: "Encargado de Compras", dept: "La Paz", sal: 6500.00 }
+  ];
+
+  for (let i = 1; i <= 30; i++) {
+    const fn = randomElement(firstNames);
+    const ln = randomElement(lastNames);
+    const roleObj = randomElement(rrhhRoles);
+    const hireDate = generateRandomDate("2021-01-01", "2025-12-31");
+
+    db.rrhh.employees.push({
+      id: i,
+      first_name: fn,
+      last_name: ln,
+      role: roleObj.title,
+      salary_bs: roleObj.sal,
+      hire_date: hireDate,
+      status: "activo",
+      department: roleObj.dept,
+      vacation_days_left: randomBetween(5, 25)
+    });
+  }
+
+  const leaveTypes = ["Vacación", "Baja Médica", "Permiso Personal", "Licencia por Maternidad/Paternidad"];
+  const leaveReasons = ["Vacaciones anuales familiares", "Resfrío común o gripe", "Trámite de documentos personal", "Nacimiento de hijo", "Viaje de descanso a Tarija", "Problemas de salud menores"];
+  for (let i = 1; i <= 60; i++) {
+    const emp = randomElement(db.rrhh.employees);
+    const start = generateRandomDate("2025-12-01", "2026-05-31");
+    const days = randomBetween(1, 15);
+    const endDate = new Date(start);
+    endDate.setDate(endDate.getDate() + days);
+    const endDateStr = endDate.toISOString().split('T')[0];
+    const status = Math.random() < 0.8 ? "Aprobado" : randomElement(["Borrador", "Rechazado"]);
+
+    db.rrhh.leaves.push({
+      id: i,
+      employeeId: emp.id,
+      type: randomElement(leaveTypes),
+      start_date: start,
+      end_date: endDateStr,
+      days: days,
+      status: status,
+      reason: randomElement(leaveReasons)
+    });
+  }
+
+  const expenseLabels = [
+    "Viáticos Reunión Clientes Oruro", "Compra Repuestos de Urgencia", "Almuerzo Técnico Clientes",
+    "Hospedaje Visita Planta Santa Cruz", "Pasajes Aéreos La Paz - SCZ", "Taxi Reunión de Ventas",
+    "Materiales de Oficina Urgentes", "Cena de Negocios Cierre Contrato", "Combustible Camión Distribución"
+  ];
+  const expenseCategories = ["Transporte", "Alojamiento", "Alimentación", "Materiales", "Otros"];
+  for (let i = 1; i <= 50; i++) {
+    const emp = randomElement(db.rrhh.employees);
+    const date = generateRandomDate("2025-12-01", "2026-05-31");
+    const label = randomElement(expenseLabels);
+
+    const lineCount = randomBetween(1, 3);
+    const lines = [];
+    let total_amount = 0;
+
+    for (let l = 1; l <= lineCount; l++) {
+      const category = randomElement(expenseCategories);
+      const amount = randomFloat(50.00, 800.00);
+      total_amount += amount;
+
+      lines.push({
+        id: l,
+        date: date,
+        concept: `${category} para ${label}`,
+        category: category,
+        amount_bs: amount
+      });
+    }
+
+    total_amount = parseFloat(total_amount.toFixed(2));
+    const status = Math.random() < 0.8 ? "Aprobado" : randomElement(["Borrador", "Rechazado"]);
+
+    db.rrhh.expenses.push({
+      id: i,
+      employeeId: emp.id,
+      date: date,
+      label: label,
+      amount_bs: total_amount,
+      status: status,
+      accounting_status: status === "Aprobado" ? (Math.random() < 0.5 ? "pending" : "posted") : "pending",
+      lines: lines
+    });
+  }
+
+  const puestoTitles = [
+    "Ingeniero Mecánico Junior", "Desarrollador Full Stack Scada", "Técnico Soldador Especializado",
+    "Analista de Cuentas por Cobrar", "Ejecutivo Comercial Santa Cruz", "Encargado de Logística El Alto",
+    "Asistente Administrativo Oruro", "Especialista en Automatización PLC", "Chofer de Distribución Regional",
+    "Jefe de Compras y Suministros"
+  ];
+  for (let i = 1; i <= 10; i++) {
+    const title = puestoTitles[i - 1] || `Puesto Técnico ${i}`;
+    const dept = randomElement(departments);
+    const minSal = randomBetween(4, 8) * 1000;
+    const maxSal = minSal + randomBetween(2, 6) * 1000;
+    const date = generateRandomDate("2026-04-01", "2026-05-31");
+    const status = Math.random() < 0.7 ? "Abierto" : randomElement(["Borrador", "Cerrado"]);
+
+    db.rrhh.puestos.push({
+      id: i,
+      title: title,
+      department: dept,
+      salary_range: `Bs. ${minSal.toLocaleString('de-DE')} - ${maxSal.toLocaleString('de-DE')}`,
+      status: status,
+      description: `Buscamos un profesional para cubrir la vacante de ${title} en nuestra oficina de ${dept}.`,
+      date_created: date
+    });
+  }
+
+  const appStatus = ["Nuevo", "Entrevista", "Evaluación", "Rechazado", "Aceptado"];
+  for (let i = 1; i <= 25; i++) {
+    const fn = randomElement(firstNames);
+    const ln = randomElement(lastNames);
+    const job = randomElement(db.rrhh.puestos);
+    const date = new Date(job.date_created);
+    date.setDate(date.getDate() + randomBetween(1, 15));
+    const dateStr = date.toISOString().split('T')[0];
+
+    db.rrhh.applications.push({
+      id: i,
+      puestoId: job.id,
+      first_name: fn,
+      last_name: ln,
+      email: `${fn.toLowerCase()}.${ln.toLowerCase()}@candidate.com`,
+      phone: randomPhone().split(" ")[1],
+      cv_link: `https://diasa.com.bo/cv/cv_${fn.toLowerCase()}_${ln.toLowerCase()}.pdf`,
+      status: randomElement(appStatus),
+      date_applied: dateStr
+    });
+  }
+
+  let payId = 1;
+  const payMonths = [
+    { month: "03", year: "2026", date: "2026-03-31" },
+    { month: "04", year: "2026", date: "2026-04-30" },
+    { month: "05", year: "2026", date: "2026-05-31" }
+  ];
+  payMonths.forEach(m => {
+    db.rrhh.employees.forEach(emp => {
+      const sal = emp.salary_bs;
+      const deductions = parseFloat((sal * 0.1271).toFixed(2));
+      const bonuses = Math.random() < 0.15 ? randomFloat(200.00, 1000.00) : 0;
+      const netPaid = parseFloat((sal - deductions + bonuses).toFixed(2));
+
+      db.rrhh.payroll_payments.push({
+        id: payId++,
+        employeeId: emp.id,
+        month: m.month,
+        year: m.year,
+        salary_bs: sal,
+        bonuses_bs: bonuses,
+        deductions_bs: deductions,
+        net_paid_bs: netPaid,
+        date: m.date,
+        status: "Pagado",
+        bankId: 1
+      });
+
+      const bnb = db.bancos.find(b => b.id === 1);
+      if (bnb) bnb.balance -= netPaid;
+    });
+  });
+
+  // 10. Projects
+  const projectTitles = [
+    "Montaje Eléctrico Planta Colquiri", "Mantenimiento Preventivo Gasoducto Red",
+    "Instalación Red Telefónica Interna CBN", "Rediseño Red de Datos BMSC",
+    "Automatización Subestación Eléctrica MSC", "Ampliación Ancho de Banda ENTEL",
+    "Soporte de Automatización Planta Vinto", "Instalación de Válvulas Planta Senkata",
+    "Auditoría Eléctrica Planta El Alto", "Mapeo de Sensores Hidráulicos Yacuiba",
+    "Capacitación Personal Técnico Planta CBBA", "Montaje Estructura de Antenas ENTEL SCZ",
+    "Mantenimiento Subestación Eléctrica Tarija", "Suministro de Repuestos Hidráulicos CBN",
+    "Modernización PLC Tablero Control Principal", "Soporte Técnico Especializado YPFB Transredes",
+    "Automatización Dosificación Ingenio Azucarero", "Instalación Cableado Estructurado Oficinas Centrales",
+    "Puesta a Tierra de Equipos Críticos El Alto", "Estudio de Pre-factibilidad Robótica Vinto"
+  ];
+  const projectStatus = ["Borrador", "En proceso", "Cerrado"];
+  for (let i = 1; i <= 20; i++) {
+    const title = projectTitles[i - 1] || `Proyecto Especial ${i}`;
+    const t = randomElement(clientTerceros);
+    const budget = randomFloat(30000.00, 500000.00);
+    const start = generateRandomDate("2025-10-01", "2026-04-01");
+    const end = new Date(start);
+    end.setMonth(end.getMonth() + randomBetween(3, 10));
+    const endStr = end.toISOString().split('T')[0];
+    const isOpp = Math.random() < 0.3;
+    let oppAmount = 0;
+    let oppProb = 0;
+    let oppStatus = "";
+    if (isOpp) {
+      oppAmount = budget;
+      oppProb = randomElement([10, 30, 50, 80, 100]);
+      oppStatus = oppProb === 100 ? "Ganado" : (oppProb >= 80 ? "Negociación" : "Propuesta comercial");
+    }
+
+    db.proyectos.projects.push({
+      id: i,
+      title: title,
+      terceroId: t.id,
+      budget_bs: budget,
+      start_date: start,
+      end_date: endStr,
+      status: randomElement(projectStatus),
+      is_opportunity: isOpp,
+      opp_amount: oppAmount,
+      opp_probability: oppProb,
+      opp_status: oppStatus
+    });
+  }
+
+  // Tasks & Logs
+  let taskId = 1;
+  let logId = 1;
+
+  db.proyectos.projects.forEach(proj => {
+    const taskCount = randomBetween(6, 9);
+    for (let t = 1; t <= taskCount; t++) {
+      if (taskId > 150) break;
+      const title = randomElement(taskTitles) + ` (${t})`;
+      const assignee = randomElement(db.rrhh.employees);
+      const hoursPlanned = randomBetween(10, 80);
+      const hoursSpent = Math.random() < 0.7 ? randomBetween(5, hoursPlanned + 10) : 0;
+      const status = hoursSpent === 0 ? "Por hacer" : (hoursSpent >= hoursPlanned ? "Finalizado" : "En proceso");
+
+      db.proyectos.tasks.push({
+        id: taskId,
+        projectId: proj.id,
+        title: title,
+        assigneeId: assignee.id,
+        hours_planned: hoursPlanned,
+        hours_spent: hoursSpent,
+        status: status
+      });
+
+      if (hoursSpent > 0) {
+        let remainingHours = hoursSpent;
+        const logDate = new Date(proj.start_date);
+        while (remainingHours > 0) {
+          const logHrs = Math.min(remainingHours, randomElement([4, 6, 8]));
+          remainingHours -= logHrs;
+          logDate.setDate(logDate.getDate() + randomBetween(1, 4));
+          const logDateStr = logDate.toISOString().split('T')[0];
+
+          db.proyectos.time_logs.push({
+            id: logId++,
+            taskId: taskId,
+            employeeId: assignee.id,
+            date: logDateStr,
+            hours: logHrs
+          });
+        }
+      }
+      taskId++;
+    }
+  });
+
+  // Ensure bank balances are rounded and stored nicely
+  db.bancos.forEach(b => {
+    b.balance = parseFloat(b.balance.toFixed(2));
+  });
+
+  // Save to database
+  saveDB(db);
+  return db;
+}
+
+/**
+ * Guardar la base de datos en localStorage.
+ */
 function saveDB(data) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
 /**
- * Restablecer base de datos a valores iniciales.
+ * Restablecer base de datos a valores iniciales de demostración masiva.
  */
 function resetDB() {
-  saveDB(initialData);
-  return JSON.parse(JSON.stringify(initialData));
+  return generateMassiveData();
 }
 
 // Exportar funciones globalmente para que sean accesibles desde los scripts del SPA
 window.DolibarrDB = {
   get: getDB,
   save: saveDB,
-  reset: resetDB
+  reset: resetDB,
+  generateMassiveData: generateMassiveData
 };
