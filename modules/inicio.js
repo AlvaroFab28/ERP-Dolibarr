@@ -164,16 +164,6 @@ window.DolibarrModules.inicio = {
           </div>
         </div>
 
-        <!-- Tickets de Soporte -->
-        <div class="widget-box wb-warning" onclick="window.location.hash='#/tickets/lista'">
-          <div class="wb-icon"><i class="fas fa-life-ring"></i></div>
-          <div class="wb-details">
-            <div class="wb-count">${ticketsActivos}</div>
-            <div class="wb-label">Tickets Abiertos</div>
-            <div class="wb-amount">Soporte al cliente</div>
-          </div>
-        </div>
-
       </div>
 
       <!-- Sección de Gráficos y Tablas -->
@@ -233,51 +223,6 @@ window.DolibarrModules.inicio = {
                         <td>${tercero.name}</td>
                         <td>${window.DolibarrUtils.formatCurrency(p.budget_bs)}</td>
                         <td>${window.DolibarrUtils.renderBadge(p.status)}</td>
-                      </tr>
-                    `;
-                  }).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Próximos Eventos de Agenda -->
-          <div class="card">
-            <div class="card-header">
-              <div class="card-title"><i class="fas fa-calendar-days"></i> Agenda - Próximas Tareas y Eventos</div>
-              <a href="#/agenda" style="font-size:12px;">Ver Agenda</a>
-            </div>
-            <div class="card-body" style="padding:0;">
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th>Tipo</th>
-                    <th>Evento</th>
-                    <th>Fecha / Hora</th>
-                    <th>Relación</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${db.agenda.slice(0, 3).map(ev => {
-                    let relName = 'Ninguno';
-                    if (ev.relationType === 'tercero') {
-                      const t = db.terceros.find(item => item.id === ev.relationId);
-                      if (t) relName = t.name;
-                    }
-                    
-                    let evIcon = 'fa-calendar';
-                    if (ev.type === 'Reunión') evIcon = 'fa-handshake';
-                    if (ev.type === 'Llamada') evIcon = 'fa-phone';
-                    if (ev.type === 'Visita') evIcon = 'fa-building-circle-check';
-
-                    const dateFormatted = ev.start_date.replace('T', ' ');
-
-                    return `
-                      <tr onclick="window.location.hash='#/agenda'">
-                        <td style="text-align:center;"><i class="fas ${evIcon}" style="color:var(--primary); font-size:16px;"></i></td>
-                        <td><strong>${ev.title}</strong><div style="font-size:11px; color:var(--text-muted);">${ev.desc}</div></td>
-                        <td><span style="font-size:12px;">${dateFormatted}</span></td>
-                        <td><span style="font-size:11px;">${relName}</span></td>
                       </tr>
                     `;
                   }).join('')}

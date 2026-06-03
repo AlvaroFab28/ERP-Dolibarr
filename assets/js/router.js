@@ -39,21 +39,25 @@ const SIDEBAR_MENUS = {
   terceros: {
     title: "Terceros y Contactos",
     items: [
-      { label: "Resumen Terceros", path: "#/terceros", icon: "fa-users" },
+      { label: "Área Terceros", path: "#/terceros", icon: "fa-users" },
       { label: "Nuevo Tercero", path: "#/terceros/nuevo", icon: "fa-user-plus" },
       { label: "Listado de Terceros", path: "#/terceros/lista", icon: "fa-list" },
-      { label: "Contactos/Direcciones", path: "#/terceros/contactos", icon: "fa-address-book" }
+      { label: "Clientes Potenciales", path: "#/terceros/potenciales", icon: "fa-user-clock" },
+      { label: "Nuevo Contacto", path: "#/terceros/contactos-nuevo", icon: "fa-address-card" },
+      { label: "Listado Contactos", path: "#/terceros/contactos", icon: "fa-address-book" }
     ]
   },
   productos: {
     title: "Productos | Servicios",
     items: [
       { label: "Resumen Stock", path: "#/productos", icon: "fa-boxes-stacked" },
-      { label: "Nuevo Producto", path: "#/productos/nuevo", icon: "fa-plus-circle" },
-      { label: "Listado Productos", path: "#/productos/lista", icon: "fa-box" },
-      { label: "Nuevo Servicio", path: "#/productos/nuevo-servicio", icon: "fa-plus-square" },
-      { label: "Listado Servicios", path: "#/productos/lista-servicios", icon: "fa-hand-holding-hand" },
-      { label: "Almacenes / Stocks", path: "#/productos/almacenes", icon: "fa-warehouse" }
+      { label: "Productos Físicos", path: "#/productos/lista", icon: "fa-box" },
+      { label: "Servicios en Catálogo", path: "#/productos/lista-servicios", icon: "fa-hand-holding-hand" },
+      { label: "Almacenes y Zonas", path: "#/productos/almacenes", icon: "fa-warehouse" },
+      { label: "Transferencias Stock", path: "#/productos/transferencias", icon: "fa-truck-ramp-box" },
+      { label: "Ajustes de Inventario", path: "#/productos/inventarios", icon: "fa-clipboard-check" },
+      { label: "Gestión de Envíos", path: "#/productos/envios", icon: "fa-truck-fast" },
+      { label: "Estadísticas", path: "#/productos/estadisticas", icon: "fa-chart-line" }
     ]
   },
   mrp: {
@@ -68,9 +72,10 @@ const SIDEBAR_MENUS = {
     title: "Proyectos y Tareas",
     items: [
       { label: "Resumen Oportunidades", path: "#/proyectos", icon: "fa-diagram-project" },
-      { label: "Nuevo Proyecto", path: "#/proyectos/nuevo", icon: "fa-folder-plus" },
+      { label: "Nuevo Proyecto/Opc.", path: "#/proyectos/nuevo", icon: "fa-folder-plus" },
       { label: "Listado Proyectos", path: "#/proyectos/lista", icon: "fa-folder-open" },
-      { label: "Tareas / Actividades", path: "#/proyectos/tareas", icon: "fa-tasks" }
+      { label: "Tareas / Actividades", path: "#/proyectos/tareas", icon: "fa-tasks" },
+      { label: "Tiempo Dedicado", path: "#/proyectos/tiempo", icon: "fa-clock" }
     ]
   },
   comercial: {
@@ -79,8 +84,10 @@ const SIDEBAR_MENUS = {
       { label: "Resumen Comercial", path: "#/comercial", icon: "fa-briefcase" },
       { label: "Presupuestos Cliente", path: "#/comercial/presupuestos", icon: "fa-file-invoice-dollar" },
       { label: "Pedidos Cliente", path: "#/comercial/pedidos", icon: "fa-shopping-cart" },
+      { label: "Contratos de Servicio", path: "#/comercial/contratos", icon: "fa-file-contract" },
       { label: "Presupuestos Proveedor", path: "#/comercial/presupuestos-prov", icon: "fa-file-signature" },
-      { label: "Pedidos Proveedor", path: "#/comercial/pedidos-prov", icon: "fa-truck-loading" }
+      { label: "Pedidos Proveedor", path: "#/comercial/pedidos-prov", icon: "fa-truck-loading" },
+      { label: "Estadísticas", path: "#/comercial/estadisticas", icon: "fa-chart-line" }
     ]
   },
   financiera: {
@@ -89,14 +96,24 @@ const SIDEBAR_MENUS = {
       { label: "Resumen Financiero", path: "#/financiera", icon: "fa-calculator" },
       { label: "Facturas Clientes", path: "#/financiera/facturas-cliente", icon: "fa-file-invoice" },
       { label: "Facturas Proveedores", path: "#/financiera/facturas-proveedor", icon: "fa-file-contract" },
-      { label: "Historial Pagos", path: "#/financiera/pagos", icon: "fa-cash-register" }
+      { label: "Pagos Varios", path: "#/financiera/pagos-varios", icon: "fa-hand-holding-dollar" },
+      { label: "Gestión de Préstamos", path: "#/financiera/prestamos", icon: "fa-landmark" },
+      { label: "Márgenes por Producto", path: "#/financiera/margenes", icon: "fa-chart-pie" },
+      { label: "Resumen Salarios", path: "#/financiera/salarios", icon: "fa-wallet" },
+      { label: "Historial General", path: "#/financiera/pagos", icon: "fa-cash-register" }
     ]
   },
   bancos: {
     title: "Bancos | Cajas",
     items: [
       { label: "Cuentas Financieras", path: "#/bancos", icon: "fa-university" },
-      { label: "Nueva Cuenta", path: "#/bancos/nueva", icon: "fa-plus-circle" }
+      { label: "Nueva Cuenta", path: "#/bancos/nueva", icon: "fa-plus-circle" },
+      { label: "Registros Bancarios", path: "#/bancos/registros", icon: "fa-list-ol" },
+      { label: "Transferencia Interna", path: "#/bancos/transferencia", icon: "fa-exchange-alt" },
+      { label: "Cobros Domiciliados", path: "#/bancos/domiciliaciones", icon: "fa-file-invoice" },
+      { label: "Pagos por Transferencia", path: "#/bancos/transferencias-prov", icon: "fa-share-square" },
+      { label: "Comprobantes Depósito", path: "#/bancos/depositos", icon: "fa-money-check" },
+      { label: "Control de Efectivo POS", path: "#/bancos/efectivo-lista", icon: "fa-cash-register" }
     ]
   },
   contabilidad: {
@@ -104,16 +121,23 @@ const SIDEBAR_MENUS = {
     items: [
       { label: "Cuadro de Mando", path: "#/contabilidad", icon: "fa-book" },
       { label: "Libro Mayor", path: "#/contabilidad/libro-mayor", icon: "fa-list-ol" },
-      { label: "Diarios de Registro", path: "#/contabilidad/diarios", icon: "fa-journal-whills" }
+      { label: "Diarios de Registro", path: "#/contabilidad/diarios", icon: "fa-journal-whills" },
+      { label: "Generar Asiento OD", path: "#/contabilidad/nuevo-asiento", icon: "fa-pen-to-square" },
+      { label: "Enlace a Contabilidad", path: "#/contabilidad/enlace", icon: "fa-link" },
+      { label: "Exportar Datos", path: "#/contabilidad/exportar", icon: "fa-download" }
     ]
   },
   rrhh: {
     title: "Recursos Humanos",
     items: [
       { label: "Resumen RRHH", path: "#/rrhh", icon: "fa-id-card" },
-      { label: "Empleados", path: "#/rrhh/empleados", icon: "fa-user-tie" },
+      { label: "Empleados y Planilla", path: "#/rrhh/empleados", icon: "fa-user-tie" },
+      { label: "Historial de Salarios", path: "#/rrhh/pagos", icon: "fa-money-bill-wave" },
       { label: "Días Libres / Vacaciones", path: "#/rrhh/vacaciones", icon: "fa-umbrella-beach" },
-      { label: "Gastos de Empleados", path: "#/rrhh/gastos", icon: "fa-wallet" }
+      { label: "Hojas de Gastos", path: "#/rrhh/gastos", icon: "fa-wallet" },
+      { label: "Seguimiento de Tiempos", path: "#/rrhh/tiempo", icon: "fa-clock" },
+      { label: "Puestos de Trabajo", path: "#/rrhh/puestos", icon: "fa-briefcase" },
+      { label: "Postulantes / CVs", path: "#/rrhh/aplicaciones", icon: "fa-file-invoice" }
     ]
   },
   documentos: {
@@ -140,7 +164,13 @@ const SIDEBAR_MENUS = {
   utilidades: {
     title: "Utilidades del Sistema",
     items: [
-      { label: "Etiquetas/Categorías", path: "#/utilidades", icon: "fa-tags" }
+      { label: "Etiquetas/Categorías", path: "#/utilidades", icon: "fa-tags" },
+      { label: "Plantillas de Email", path: "#/utilidades/plantillas-email", icon: "fa-envelope-open-text" },
+      { label: "Correos Masivos", path: "#/utilidades/emails-masivos", icon: "fa-mail-bulk" },
+      { label: "Nuevo Correo Masivo", path: "#/utilidades/emails-masivos-nuevo", icon: "fa-paper-plane" },
+      { label: "Exportar Datos", path: "#/utilidades/exportar", icon: "fa-download" },
+      { label: "Área de Encuestas", path: "#/utilidades/encuestas", icon: "fa-poll" },
+      { label: "Nueva Encuesta", path: "#/utilidades/encuestas-nueva", icon: "fa-plus-square" }
     ]
   },
   sitios: {

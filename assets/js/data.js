@@ -41,31 +41,43 @@ const initialData = {
   ],
   commercial: {
     presupuestos: [
-      { id: 1, ref: "PR2605-001", terceroId: 1, date: "2026-05-10", total_ht: 42000.00, total_ttc: 47460.00, status: "Aceptado" },
-      { id: 2, ref: "PR2605-002", terceroId: 2, date: "2026-05-15", total_ht: 15000.00, total_ttc: 16950.00, status: "Borrador" },
-      { id: 3, ref: "PR2605-003", terceroId: 4, date: "2026-05-20", total_ht: 75600.00, total_ttc: 85428.00, status: "Validado" },
-      { id: 4, ref: "PR2605-004", terceroId: 3, date: "2026-05-22", total_ht: 37800.00, total_ttc: 42714.00, status: "Rechazado" }
+      { id: 1, ref: "PR2605-001", terceroId: 1, date: "2026-05-10", total_ht: 42000.00, total_ttc: 47460.00, status: "Aceptado", lines: [{ productId: 1, qty: 10, price: 4200.00, discount_pct: 0 }] },
+      { id: 2, ref: "PR2605-002", terceroId: 2, date: "2026-05-15", total_ht: 15000.00, total_ttc: 16950.00, status: "Borrador", lines: [{ productId: 5, qty: 10, price: 1500.00, discount_pct: 0 }] },
+      { id: 3, ref: "PR2605-003", terceroId: 4, date: "2026-05-20", total_ht: 75600.00, total_ttc: 85428.00, status: "Validado", lines: [{ productId: 3, qty: 4, price: 18900.00, discount_pct: 0 }] },
+      { id: 4, ref: "PR2605-004", terceroId: 3, date: "2026-05-22", total_ht: 37800.00, total_ttc: 42714.00, status: "Rechazado", lines: [{ productId: 1, qty: 9, price: 4200.00, discount_pct: 0 }] }
     ],
     pedidos: [
-      { id: 1, ref: "PE2605-001", terceroId: 1, date: "2026-05-11", total_ht: 42000.00, total_ttc: 47460.00, status: "En proceso" },
-      { id: 2, ref: "PE2605-002", terceroId: 4, date: "2026-05-24", total_ht: 54000.00, total_ttc: 61020.00, status: "Entregado" },
-      { id: 3, ref: "PE2605-003", terceroId: 2, date: "2026-05-28", total_ht: 18900.00, total_ttc: 21357.00, status: "Validado" }
+      { id: 1, ref: "PE2605-001", terceroId: 1, date: "2026-05-11", total_ht: 42000.00, total_ttc: 47460.00, status: "En proceso", lines: [{ productId: 1, qty: 10, price: 4200.00, discount_pct: 0 }] },
+      { id: 2, ref: "PE2605-002", terceroId: 4, date: "2026-05-24", total_ht: 54000.00, total_ttc: 61020.00, status: "Entregado", lines: [{ productId: 3, qty: 3, price: 18900.00, discount_pct: 5 }] },
+      { id: 3, ref: "PE2605-003", terceroId: 2, date: "2026-05-28", total_ht: 18900.00, total_ttc: 21357.00, status: "Validado", lines: [{ productId: 3, qty: 1, price: 18900.00, discount_pct: 0 }] }
+    ],
+    contratos: [
+      { id: 1, ref: "CON2606-001", terceroId: 1, label: "Mantenimiento Anual Válvulas YPFB", monto_bs: 120000.00, start_date: "2026-06-01", end_date: "2027-05-31", status: "Activo" },
+      { id: 2, ref: "CON2606-002", terceroId: 2, label: "Soporte de Fibra Óptica ENTEL", monto_bs: 45000.00, start_date: "2026-07-01", end_date: "2026-12-31", status: "Borrador" },
+      { id: 3, ref: "CON2606-003", terceroId: 3, label: "Monitoreo Red Interna CBN", monto_bs: 35000.00, start_date: "2025-06-01", end_date: "2026-05-31", status: "Cerrado" }
     ]
   },
   financiera: {
     facturas_cliente: [
-      { id: 1, ref: "FA2605-001", terceroId: 1, date: "2026-05-12", date_due: "2026-06-12", total_ht: 42000.00, total_ttc: 47460.00, status: "Pago parcial" },
-      { id: 2, ref: "FA2605-002", terceroId: 4, date: "2026-05-25", date_due: "2026-06-25", total_ht: 54000.00, total_ttc: 61020.00, status: "Pagado" },
-      { id: 3, ref: "FA2605-003", terceroId: 2, date: "2026-05-29", date_due: "2026-06-29", total_ht: 18900.00, total_ttc: 21357.00, status: "Validado" }
+      { id: 1, ref: "FA2605-001", terceroId: 1, date: "2026-05-12", date_due: "2026-06-12", total_ht: 42000.00, total_ttc: 47460.00, status: "Pago parcial", accounting_status: "posted", lines: [{ productId: 1, qty: 10, price: 4200.00, discount_pct: 0 }] },
+      { id: 2, ref: "FA2605-002", terceroId: 4, date: "2026-05-25", date_due: "2026-06-25", total_ht: 54000.00, total_ttc: 61020.00, status: "Pagado", accounting_status: "posted", lines: [{ productId: 3, qty: 3, price: 18000.00, discount_pct: 0 }] },
+      { id: 3, ref: "FA2605-003", terceroId: 2, date: "2026-05-29", date_due: "2026-06-29", total_ht: 18900.00, total_ttc: 21357.00, status: "Validado", accounting_status: "pending", lines: [{ productId: 3, qty: 1, price: 18900.00, discount_pct: 0 }] }
     ],
     facturas_proveedor: [
-      { id: 1, ref: "FP-VINTO-092", terceroId: 5, date: "2026-05-05", date_due: "2026-06-05", total_ht: 54000.00, total_ttc: 61020.00, status: "Validado" },
-      { id: 2, ref: "FP-SOP-044", terceroId: 6, date: "2026-05-18", date_due: "2026-06-18", total_ht: 3500.00, total_ttc: 3955.00, status: "Pagado" }
+      { id: 1, ref: "FP-VINTO-092", terceroId: 5, date: "2026-05-05", date_due: "2026-06-05", total_ht: 54000.00, total_ttc: 61020.00, status: "Validado", accounting_status: "pending", lines: [{ productId: 3, qty: 3, price: 18000.00, discount_pct: 0 }] },
+      { id: 2, ref: "FP-SOP-044", terceroId: 6, date: "2026-05-18", date_due: "2026-06-18", total_ht: 3500.00, total_ttc: 3955.00, status: "Pagado", accounting_status: "posted", lines: [{ productId: 4, qty: 5, price: 700.00, discount_pct: 0 }] }
     ],
     pagos: [
       { id: 1, type: "cliente", ref: "PAG-CL-001", invoiceRef: "FA2605-001", amount: 20000.00, date: "2026-05-15", method: "Transferencia BNB" },
       { id: 2, type: "cliente", ref: "PAG-CL-002", invoiceRef: "FA2605-002", amount: 61020.00, date: "2026-05-26", method: "Transferencia BMSC" },
       { id: 3, type: "proveedor", ref: "PAG-PR-001", invoiceRef: "FP-SOP-044", amount: 3955.00, date: "2026-05-20", method: "Efectivo" }
+    ],
+    prestamos: [
+      { id: 1, ref: "PRE2606-001", lender: "Banco Nacional de Bolivia (BNB)", amount_bs: 100000.00, interest_rate_pct: 7.5, term_months: 24, monthly_payment_bs: 4500.00, balance_bs: 91000.00, date: "2026-05-01", status: "Activo", bankId: 1 }
+    ],
+    pagos_varios: [
+      { id: 1, ref: "VAR2606-001", label: "Pago de Alquiler de Oficinas Piso 12", category: "Alquileres", amount_bs: 3500.00, date: "2026-05-02", bankId: 1, method: "Transferencia BNB" },
+      { id: 2, ref: "VAR2606-002", label: "Factura Mensual de Luz - DELAPAZ", category: "Servicios Básicos", amount_bs: 480.00, date: "2026-05-10", bankId: 3, method: "Efectivo / Caja" }
     ]
   },
   bancos: [
@@ -75,29 +87,63 @@ const initialData = {
   ],
   contabilidad: {
     diario: [
-      { id: 1, date: "2026-05-12", ref: "FA2605-001", desc: "Venta YPFB Corp Válvula", account: "400000 - Ventas", debit: 0, credit: 42000.00, journal: "Ventas" },
-      { id: 2, date: "2026-05-12", ref: "FA2605-001", desc: "Débito Fiscal IVA 13%", account: "213010 - IVA Débito", debit: 0, credit: 5460.00, journal: "Ventas" },
-      { id: 3, date: "2026-05-12", ref: "FA2605-001", desc: "Exigible YPFB", account: "120000 - Clientes", debit: 47460.00, credit: 0, journal: "Ventas" },
-      { id: 4, date: "2026-05-15", ref: "PAG-CL-001", desc: "Pago Parcial YPFB BNB", account: "111100 - Banco BNB", debit: 20000.00, credit: 0, journal: "Bancos" },
-      { id: 5, date: "2026-05-15", ref: "PAG-CL-001", desc: "Abono Clientes YPFB", account: "120000 - Clientes", debit: 0, credit: 20000.00, journal: "Bancos" }
+      { id: 1, date: "2026-05-12", ref: "FA2605-001", desc: "Venta YPFB Corp Válvula", account: "400000 - Ventas de Productos", debit: 0, credit: 42000.00, journal: "Ventas" },
+      { id: 2, date: "2026-05-12", ref: "FA2605-001", desc: "Débito Fiscal IVA 13%", account: "213010 - Débito Fiscal IVA", debit: 0, credit: 5460.00, journal: "Ventas" },
+      { id: 3, date: "2026-05-12", ref: "FA2605-001", desc: "Exigible YPFB", account: "120000 - Clientes (Cuentas por Cobrar)", debit: 47460.00, credit: 0, journal: "Ventas" },
+      { id: 4, date: "2026-05-15", ref: "PAG-CL-001", desc: "Pago Parcial YPFB BNB", account: "111100 - Caja/Banco BNB", debit: 20000.00, credit: 0, journal: "Bancos" },
+      { id: 5, date: "2026-05-15", ref: "PAG-CL-001", desc: "Abono Clientes YPFB", account: "120000 - Clientes (Cuentas por Cobrar)", debit: 0, credit: 20000.00, journal: "Bancos" },
+      // FA2605-002
+      { id: 6, date: "2026-05-25", ref: "FA2605-002", desc: "Venta Minera San Cristóbal", account: "400000 - Ventas de Productos", debit: 0, credit: 54000.00, journal: "Ventas" },
+      { id: 7, date: "2026-05-25", ref: "FA2605-002", desc: "Débito Fiscal IVA 13%", account: "213010 - Débito Fiscal IVA", debit: 0, credit: 7020.00, journal: "Ventas" },
+      { id: 8, date: "2026-05-25", ref: "FA2605-002", desc: "Exigible San Cristóbal", account: "120000 - Clientes (Cuentas por Cobrar)", debit: 61020.00, credit: 0, journal: "Ventas" },
+      // PAG-CL-002
+      { id: 9, date: "2026-05-26", ref: "PAG-CL-002", desc: "Cobro total FA2605-002 BMSC", account: "111200 - Caja/Banco BMSC", debit: 61020.00, credit: 0, journal: "Bancos" },
+      { id: 10, date: "2026-05-26", ref: "PAG-CL-002", desc: "Abono Clientes San Cristóbal", account: "120000 - Clientes (Cuentas por Cobrar)", debit: 0, credit: 61020.00, journal: "Bancos" },
+      // FP-SOP-044
+      { id: 11, date: "2026-05-18", ref: "FP-SOP-044", desc: "Compra de Soporte Técnico", account: "501000 - Gastos de Administración (Servicios / Compras)", debit: 3500.00, credit: 0, journal: "Compras" },
+      { id: 12, date: "2026-05-18", ref: "FP-SOP-044", desc: "Crédito Fiscal IVA 13%", account: "113010 - Crédito Fiscal IVA", debit: 455.00, credit: 0, journal: "Compras" },
+      { id: 13, date: "2026-05-18", ref: "FP-SOP-044", desc: "Obligación SOPOTECS", account: "211000 - Proveedores (Cuentas por Pagar)", debit: 0, credit: 3955.00, journal: "Compras" },
+      // PAG-PR-001
+      { id: 14, date: "2026-05-20", ref: "PAG-PR-001", desc: "Pago Factura SOPOTECS", account: "211000 - Proveedores (Cuentas por Pagar)", debit: 3955.00, credit: 0, journal: "Bancos" },
+      { id: 15, date: "2026-05-20", ref: "PAG-PR-001", desc: "Egreso de Caja Chica", account: "111300 - Caja Chica", debit: 0, credit: 3955.00, journal: "Bancos" }
     ]
   },
   rrhh: {
     employees: [
-      { id: 1, first_name: "Alejandro", last_name: "Mamani", role: "Gerente de Finanzas", salary_bs: 18000.00, hire_date: "2020-02-15", status: "activo" },
-      { id: 2, first_name: "Giovanna", last_name: "Flores", role: "Jefe de Ventas", salary_bs: 12000.00, hire_date: "2022-06-01", status: "activo" },
-      { id: 3, first_name: "Mauricio", last_name: "Copa", role: "Ingeniero de Soporte", salary_bs: 8500.00, hire_date: "2024-01-10", status: "activo" },
-      { id: 4, first_name: "Valeria", last_name: "Pinto", role: "Asistente Administrativa", salary_bs: 5500.00, hire_date: "2025-09-01", status: "activo" }
+      { id: 1, first_name: "Alejandro", last_name: "Mamani", role: "Gerente de Finanzas", salary_bs: 18000.00, hire_date: "2020-02-15", status: "activo", department: "La Paz", vacation_days_left: 15 },
+      { id: 2, first_name: "Giovanna", last_name: "Flores", role: "Jefe de Ventas", salary_bs: 12000.00, hire_date: "2022-06-01", status: "activo", department: "Santa Cruz", vacation_days_left: 12 },
+      { id: 3, first_name: "Mauricio", last_name: "Copa", role: "Ingeniero de Soporte", salary_bs: 8500.00, hire_date: "2024-01-10", status: "activo", department: "La Paz", vacation_days_left: 15 },
+      { id: 4, first_name: "Valeria", last_name: "Pinto", role: "Asistente Administrativa", salary_bs: 5500.00, hire_date: "2025-09-01", status: "activo", department: "Cochabamba", vacation_days_left: 18 }
     ],
     leaves: [
-      { id: 1, employeeId: 2, type: "Vacación", start_date: "2026-06-05", end_date: "2026-06-12", days: 6, status: "Aprobado" },
-      { id: 2, employeeId: 3, type: "Baja Médica", start_date: "2026-05-18", end_date: "2026-05-19", days: 2, status: "Aprobado" },
-      { id: 3, employeeId: 4, type: "Vacación", start_date: "2026-07-01", end_date: "2026-07-15", days: 10, status: "Borrador" }
+      { id: 1, employeeId: 2, type: "Vacación", start_date: "2026-06-05", end_date: "2026-06-12", days: 6, status: "Aprobado", reason: "Vacaciones de invierno" },
+      { id: 2, employeeId: 3, type: "Baja Médica", start_date: "2026-05-18", end_date: "2026-05-19", days: 2, status: "Aprobado", reason: "Resfrío común con baja médica" },
+      { id: 3, employeeId: 4, type: "Vacación", start_date: "2026-07-01", end_date: "2026-07-15", days: 10, status: "Borrador", reason: "Asuntos familiares" }
     ],
     expenses: [
-      { id: 1, employeeId: 2, date: "2026-05-14", label: "Viáticos Viaje de Ventas Santa Cruz", amount_bs: 1850.00, status: "Pagado" },
-      { id: 2, employeeId: 3, date: "2026-05-20", label: "Compra de Cables y Conectores de Emergencia", amount_bs: 320.00, status: "Aprobado" },
-      { id: 3, employeeId: 1, date: "2026-05-28", label: "Almuerzo Corporativo Auditoría", amount_bs: 750.00, status: "Borrador" }
+      { id: 1, employeeId: 2, date: "2026-05-14", label: "Viáticos Viaje de Ventas Santa Cruz", amount_bs: 1850.00, status: "Aprobado", accounting_status: "pending", lines: [
+        { id: 1, date: "2026-05-12", concept: "Pasajes de bus La Paz - SCZ", category: "Transporte", amount_bs: 350.00 },
+        { id: 2, date: "2026-05-13", concept: "Hospedaje 2 noches Hotel Camino Real", category: "Alojamiento", amount_bs: 1100.00 },
+        { id: 3, date: "2026-05-14", concept: "Cena de negocios clientes YPFB", category: "Alimentación", amount_bs: 400.00 }
+      ] },
+      { id: 2, employeeId: 3, date: "2026-05-20", label: "Compra de Cables y Conectores de Emergencia", amount_bs: 320.00, status: "Aprobado", accounting_status: "pending", lines: [
+        { id: 1, date: "2026-05-20", concept: "Cables UTP Cat6 y conectores RJ45 AMP", category: "Materiales", amount_bs: 320.00 }
+      ] },
+      { id: 3, employeeId: 1, date: "2026-05-28", label: "Almuerzo Corporativo Auditoría", amount_bs: 750.00, status: "Borrador", accounting_status: "pending", lines: [
+        { id: 1, date: "2026-05-28", concept: "Almuerzo de trabajo auditores externos", category: "Alimentación", amount_bs: 750.00 }
+      ] }
+    ],
+    payroll_payments: [
+      { id: 1, employeeId: 2, month: "04", year: "2026", salary_bs: 12000.00, bonuses_bs: 0.00, deductions_bs: 1525.20, net_paid_bs: 10474.80, date: "2026-04-30", status: "Pagado", bankId: 1 }
+    ],
+    puestos: [
+      { id: 1, title: "Ingeniero de Automatización Senior", department: "Santa Cruz", salary_range: "Bs. 12.000 - 15.000", status: "Abierto", description: "Buscamos Ingeniero con experiencia en PLC Siemens S7-1500 y sistemas SCADA.", date_created: "2026-05-15" },
+      { id: 2, title: "Técnico de Redes y Telecomunicaciones", department: "La Paz", salary_range: "Bs. 6.000 - 8.000", status: "Abierto", description: "Soporte técnico de campo, cableado estructurado y configuración de switches Cisco.", date_created: "2026-05-20" },
+      { id: 3, title: "Encargado de Almacén", department: "Oruro", salary_range: "Bs. 5.000 - 6.000", status: "Borrador", description: "Control de inventarios de repuestos mecánicos e insumos industriales.", date_created: "2026-06-01" }
+    ],
+    applications: [
+      { id: 1, puestoId: 1, first_name: "Carlos", last_name: "Miranda", email: "cmiranda@gmail.com", phone: "78822114", cv_link: "https://diasa.com.bo/cv/cv_carlos_miranda.pdf", status: "Entrevista", date_applied: "2026-05-20" },
+      { id: 2, puestoId: 2, first_name: "Beatriz", last_name: "Quispe", email: "bquispe@hotmail.com", phone: "69955442", cv_link: "https://diasa.com.bo/cv/cv_beatriz_quispe.pdf", status: "Aceptado", date_applied: "2026-05-25" }
     ]
   },
   mrp: {
@@ -115,15 +161,22 @@ const initialData = {
   },
   proyectos: {
     projects: [
-      { id: 1, title: "Modernización de Red de Válvulas YPFB", terceroId: 1, budget_bs: 180000.00, start_date: "2026-05-01", end_date: "2026-08-30", status: "En proceso" },
-      { id: 2, title: "Estudio de Automatización Planta Vinto", terceroId: 4, budget_bs: 45000.00, start_date: "2026-06-01", end_date: "2026-07-15", status: "Borrador" },
-      { id: 3, title: "Instalación Red Telefónica Interna CBN", terceroId: 3, budget_bs: 95000.00, start_date: "2026-03-10", end_date: "2026-05-25", status: "Cerrado" }
+      { id: 1, title: "Modernización de Red de Válvulas YPFB", terceroId: 1, budget_bs: 180000.00, start_date: "2026-05-01", end_date: "2026-08-30", status: "En proceso", is_opportunity: false, opp_amount: 0, opp_probability: 0, opp_status: "" },
+      { id: 2, title: "Estudio de Automatización Planta Vinto", terceroId: 4, budget_bs: 45000.00, start_date: "2026-06-01", end_date: "2026-07-15", status: "Borrador", is_opportunity: true, opp_amount: 45000.00, opp_probability: 50, opp_status: "Propuesta comercial" },
+      { id: 3, title: "Instalación Red Telefónica Interna CBN", terceroId: 3, budget_bs: 95000.00, start_date: "2026-03-10", end_date: "2026-05-25", status: "Cerrado", is_opportunity: false, opp_amount: 0, opp_probability: 0, opp_status: "" },
+      { id: 4, title: "Automatización Subestación Eléctrica MSC", terceroId: 4, budget_bs: 320000.00, start_date: "2026-06-15", end_date: "2026-09-30", status: "Borrador", is_opportunity: true, opp_amount: 320000.00, opp_probability: 80, opp_status: "Negociación" },
+      { id: 5, title: "Ampliación de Ancho de Banda ENTEL", terceroId: 2, budget_bs: 85000.00, start_date: "2026-05-10", end_date: "2026-07-31", status: "En proceso", is_opportunity: true, opp_amount: 85000.00, opp_probability: 100, opp_status: "Ganado" }
     ],
     tasks: [
       { id: 1, projectId: 1, title: "Inspección preliminar de ductos", assigneeId: 3, hours_planned: 40, hours_spent: 38, status: "Finalizado" },
       { id: 2, projectId: 1, title: "Instalación de actuadores neumáticos", assigneeId: 3, hours_planned: 80, hours_spent: 45, status: "En proceso" },
       { id: 3, projectId: 1, title: "Pruebas de presión y fugas", assigneeId: 3, hours_planned: 24, hours_spent: 0, status: "Por hacer" },
       { id: 4, projectId: 3, title: "Tendido de cableado de fibra", assigneeId: 3, hours_planned: 120, hours_spent: 125, status: "Finalizado" }
+    ],
+    time_logs: [
+      { id: 1, taskId: 2, employeeId: 3, date: "2026-06-01", hours: 8 },
+      { id: 2, taskId: 2, employeeId: 3, date: "2026-06-02", hours: 8 },
+      { id: 3, taskId: 2, employeeId: 3, date: "2026-06-03", hours: 4 }
     ]
   },
   agenda: [
@@ -158,7 +211,34 @@ const initialData = {
       { id: 2, user: "admin", status: "Abierta", opening_balance: 500.00, closing_balance: 500.00, sales_count: 0, total_sales: 0.00 }
     ],
     cart: []
-  }
+  },
+  warehouses: [
+    { id: 1, label: "Almacén Central El Alto (LP)", location: "Av. 6 de Marzo Nro. 450, El Alto", description: "Almacén principal de distribución de insumos y equipos." },
+    { id: 2, label: "Sucursal Equipetrol (SC)", location: "Calle Los Claveles Nro. 8, Santa Cruz", description: "Sucursal de ventas y showroom de equipos." },
+    { id: 3, label: "Depósito Industrial Vinto (OR)", location: "Zona Industrial Vinto, Oruro", description: "Depósito para almacenamiento a granel y repuestos pesados." }
+  ],
+  warehouse_stocks: [
+    { productId: 1, warehouseId: 1, qty: 30 },
+    { productId: 1, warehouseId: 2, qty: 15 },
+    { productId: 2, warehouseId: 1, qty: 100 },
+    { productId: 2, warehouseId: 2, qty: 20 },
+    { productId: 3, warehouseId: 1, qty: 5 },
+    { productId: 3, warehouseId: 2, qty: 3 }
+  ],
+  inventarios: [
+    { id: 1, ref: "INV2606-001", warehouseId: 1, inspector: "Alejandro Mamani", status: "Validado", date: "2026-05-20", adjustments: [{ productId: 1, sysQty: 30, physicalQty: 30, diff: 0 }] }
+  ],
+  envios: [
+    { id: 1, ref: "ENV2606-001", orderRef: "PE2605-001", clientName: "YPFB Corporación S.A.", date: "2026-05-15", method: "Courier Bolivia", tracking: "TRK-YPFB-9021", status: "Entregado" }
+  ],
+  stock_movimientos: [
+    { id: 1, productId: 1, originWarehouseId: null, targetWarehouseId: 1, qty: 30, type: "Entrada Inicial", date: "2026-05-01" },
+    { id: 2, productId: 1, originWarehouseId: null, targetWarehouseId: 2, qty: 15, type: "Entrada Inicial", date: "2026-05-01" },
+    { id: 3, productId: 2, originWarehouseId: null, targetWarehouseId: 1, qty: 100, type: "Entrada Inicial", date: "2026-05-01" },
+    { id: 4, productId: 2, originWarehouseId: null, targetWarehouseId: 2, qty: 20, type: "Entrada Inicial", date: "2026-05-01" },
+    { id: 5, productId: 3, originWarehouseId: null, targetWarehouseId: 1, qty: 5, type: "Entrada Inicial", date: "2026-05-01" },
+    { id: 6, productId: 3, originWarehouseId: null, targetWarehouseId: 2, qty: 3, type: "Entrada Inicial", date: "2026-05-01" }
+  ]
 };
 
 /**
@@ -171,7 +251,124 @@ function getDB() {
     return JSON.parse(JSON.stringify(initialData));
   }
   try {
-    return JSON.parse(dbStr);
+    const db = JSON.parse(dbStr);
+    
+    // Migración / inicialización dinámica para sub-módulos nuevos de RRHH
+    if (!db.rrhh) db.rrhh = {};
+    if (!db.rrhh.payroll_payments) {
+      db.rrhh.payroll_payments = [
+        { id: 1, employeeId: 2, month: "04", year: "2026", salary_bs: 12000.00, bonuses_bs: 0.00, deductions_bs: 1525.20, net_paid_bs: 10474.80, date: "2026-04-30", status: "Pagado", bankId: 1 }
+      ];
+    }
+    if (!db.rrhh.puestos) {
+      db.rrhh.puestos = [
+        { id: 1, title: "Ingeniero de Automatización Senior", department: "Santa Cruz", salary_range: "Bs. 12.000 - 15.000", status: "Abierto", description: "Buscamos Ingeniero con experiencia en PLC Siemens S7-1500 y sistemas SCADA.", date_created: "2026-05-15" },
+        { id: 2, title: "Técnico de Redes y Telecomunicaciones", department: "La Paz", salary_range: "Bs. 6.000 - 8.000", status: "Abierto", description: "Soporte técnico de campo, cableado estructurado y configuración de switches Cisco.", date_created: "2026-05-20" },
+        { id: 3, title: "Encargado de Almacén", department: "Oruro", salary_range: "Bs. 5.000 - 6.000", status: "Borrador", description: "Control de inventarios de repuestos mecánicos e insumos industriales.", date_created: "2026-06-01" }
+      ];
+    }
+    if (!db.rrhh.applications) {
+      db.rrhh.applications = [
+        { id: 1, puestoId: 1, first_name: "Carlos", last_name: "Miranda", email: "cmiranda@gmail.com", phone: "78822114", cv_link: "https://diasa.com.bo/cv/cv_carlos_miranda.pdf", status: "Entrevista", date_applied: "2026-05-20" },
+        { id: 2, puestoId: 2, first_name: "Beatriz", last_name: "Quispe", email: "bquispe@hotmail.com", phone: "69955442", cv_link: "https://diasa.com.bo/cv/cv_beatriz_quispe.pdf", status: "Aceptado", date_applied: "2026-05-25" }
+      ];
+    }
+
+    // Asegurar campos extendidos para empleados
+    if (db.rrhh.employees) {
+      db.rrhh.employees.forEach(e => {
+        if (!e.department) {
+          if (e.id === 1) e.department = "La Paz";
+          else if (e.id === 2) e.department = "Santa Cruz";
+          else if (e.id === 3) e.department = "La Paz";
+          else e.department = "Cochabamba";
+        }
+        if (e.vacation_days_left === undefined) {
+          e.vacation_days_left = 15;
+        }
+      });
+    }
+
+    // Asegurar campos de líneas en los gastos existentes
+    if (db.rrhh.expenses) {
+      db.rrhh.expenses.forEach(ex => {
+        if (!ex.lines) {
+          ex.lines = [
+            { id: 1, date: ex.date, concept: ex.label, category: "Otros", amount_bs: ex.amount_bs }
+          ];
+        }
+      });
+    }
+
+    // Migraciones Financiera
+    if (!db.financiera.prestamos) {
+      db.financiera.prestamos = [
+        { id: 1, ref: "PRE2606-001", lender: "Banco Nacional de Bolivia (BNB)", amount_bs: 100000.00, interest_rate_pct: 7.5, term_months: 24, monthly_payment_bs: 4500.00, balance_bs: 91000.00, date: "2026-05-01", status: "Activo", bankId: 1 }
+      ];
+    }
+    if (!db.financiera.pagos_varios) {
+      db.financiera.pagos_varios = [
+        { id: 1, ref: "VAR2606-001", label: "Pago de Alquiler de Oficinas Piso 12", category: "Alquileres", amount_bs: 3500.00, date: "2026-05-02", bankId: 1, method: "Transferencia BNB" },
+        { id: 2, ref: "VAR2606-002", label: "Factura Mensual de Luz - DELAPAZ", category: "Servicios Básicos", amount_bs: 480.00, date: "2026-05-10", bankId: 3, method: "Efectivo / Caja" }
+      ];
+    }
+    if (db.financiera.facturas_cliente) {
+      db.financiera.facturas_cliente.forEach(f => {
+        if (!f.lines) {
+          let pId = f.total_ht === 42000 ? 1 : (f.total_ht === 18900 ? 3 : 3);
+          f.lines = [{ productId: pId, qty: f.total_ht === 42000 ? 10 : (f.total_ht === 54000 ? 3 : 1), price: f.total_ht === 42000 ? 4200.00 : (f.total_ht === 54000 ? 18000.00 : 18900.00), discount_pct: 0 }];
+        }
+      });
+    }
+    if (db.financiera.facturas_proveedor) {
+      db.financiera.facturas_proveedor.forEach(f => {
+        if (!f.lines) {
+          let pId = f.total_ht === 54000 ? 3 : 4;
+          f.lines = [{ productId: pId, qty: f.total_ht === 54000 ? 3 : 5, price: f.total_ht === 54000 ? 18000.00 : 700.00, discount_pct: 0 }];
+        }
+      });
+    }
+
+    // Migraciones Productos
+    if (!db.warehouses) {
+      db.warehouses = [
+        { id: 1, label: "Almacén Central El Alto (LP)", location: "Av. 6 de Marzo Nro. 450, El Alto", description: "Almacén principal de distribución de insumos y equipos." },
+        { id: 2, label: "Sucursal Equipetrol (SC)", location: "Calle Los Claveles Nro. 8, Santa Cruz", description: "Sucursal de ventas y showroom de equipos." },
+        { id: 3, label: "Depósito Industrial Vinto (OR)", location: "Zona Industrial Vinto, Oruro", description: "Depósito para almacenamiento a granel y repuestos pesados." }
+      ];
+    }
+    if (!db.warehouse_stocks) {
+      db.warehouse_stocks = [
+        { productId: 1, warehouseId: 1, qty: 30 },
+        { productId: 1, warehouseId: 2, qty: 15 },
+        { productId: 2, warehouseId: 1, qty: 100 },
+        { productId: 2, warehouseId: 2, qty: 20 },
+        { productId: 3, warehouseId: 1, qty: 5 },
+        { productId: 3, warehouseId: 2, qty: 3 }
+      ];
+    }
+    if (!db.inventarios) {
+      db.inventarios = [
+        { id: 1, ref: "INV2606-001", warehouseId: 1, inspector: "Alejandro Mamani", status: "Validado", date: "2026-05-20", adjustments: [{ productId: 1, sysQty: 30, physicalQty: 30, diff: 0 }] }
+      ];
+    }
+    if (!db.envios) {
+      db.envios = [
+        { id: 1, ref: "ENV2606-001", orderRef: "PE2605-001", clientName: "YPFB Corporación S.A.", date: "2026-05-15", method: "Courier Bolivia", tracking: "TRK-YPFB-9021", status: "Entregado" }
+      ];
+    }
+    if (!db.stock_movimientos) {
+      db.stock_movimientos = [
+        { id: 1, productId: 1, originWarehouseId: null, targetWarehouseId: 1, qty: 30, type: "Entrada Inicial", date: "2026-05-01" },
+        { id: 2, productId: 1, originWarehouseId: null, targetWarehouseId: 2, qty: 15, type: "Entrada Inicial", date: "2026-05-01" },
+        { id: 3, productId: 2, originWarehouseId: null, targetWarehouseId: 1, qty: 100, type: "Entrada Inicial", date: "2026-05-01" },
+        { id: 4, productId: 2, originWarehouseId: null, targetWarehouseId: 2, qty: 20, type: "Entrada Inicial", date: "2026-05-01" },
+        { id: 5, productId: 3, originWarehouseId: null, targetWarehouseId: 1, qty: 5, type: "Entrada Inicial", date: "2026-05-01" },
+        { id: 6, productId: 3, originWarehouseId: null, targetWarehouseId: 2, qty: 3, type: "Entrada Inicial", date: "2026-05-01" }
+      ];
+    }
+
+    return db;
   } catch (e) {
     console.error("Error leyendo DB de localStorage, restableciendo...", e);
     saveDB(initialData);
