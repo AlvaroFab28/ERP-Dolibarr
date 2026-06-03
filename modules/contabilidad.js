@@ -528,9 +528,14 @@ window.DolibarrModules.contabilidad = {
 
       <div class="page-header">
         <h1 class="page-title"><i class="fa-solid fa-journal-whills"></i> Diarios Contables Separados</h1>
-        <button id="btn-exportar-diario" class="btn btn-primary">
-          <i class="fas fa-download"></i> Exportar Diario Activo
-        </button>
+        <div style="display:flex; gap:10px;">
+          <button id="btn-exportar-diario-pdf" class="btn btn-danger">
+            <i class="fas fa-file-pdf"></i> Exportar PDF
+          </button>
+          <button id="btn-exportar-diario" class="btn btn-primary">
+            <i class="fas fa-download"></i> Exportar Diario Activo
+          </button>
+        </div>
       </div>
 
       <!-- Navegación por Pestañas (Tabs) -->
@@ -578,6 +583,17 @@ window.DolibarrModules.contabilidad = {
         this.renderDiarioFiltrado(diario, journal);
       });
     });
+
+    // Exportar Diario PDF
+    const exportPdfBtn = document.getElementById('btn-exportar-diario-pdf');
+    if (exportPdfBtn) {
+      exportPdfBtn.addEventListener('click', () => {
+        const activeTab = document.querySelector('.tab-item.active');
+        const journal = activeTab ? activeTab.dataset.journal : 'Ventas';
+        const filtered = db.contabilidad.diario.filter(item => item.journal === journal);
+        window.DolibarrPDF.printLibroDiario(filtered, { diario: journal });
+      });
+    }
 
     // Exportar Diario
     document.getElementById('btn-exportar-diario').addEventListener('click', () => {

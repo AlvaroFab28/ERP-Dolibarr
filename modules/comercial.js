@@ -348,7 +348,10 @@ window.DolibarrModules.comercial = {
                   <td style="text-align: right;" class="text-muted">${window.DolibarrUtils.formatCurrency(iva)}</td>
                   <td style="text-align: right;" class="font-semibold">${window.DolibarrUtils.formatCurrency(p.total_ttc)}</td>
                   <td style="text-align: center;">${window.DolibarrUtils.renderBadge(p.status)}</td>
-                  <td style="text-align: center; display:flex; gap:6px; justify-content:center;">${actionHtml}</td>
+                  <td style="text-align: center; display:flex; gap:6px; justify-content:center;">
+                    ${actionHtml}
+                    <button class="btn btn-danger btn-sm btn-pdf-pres" data-id="${p.id}"><i class="fas fa-file-pdf"></i> PDF</button>
+                  </td>
                 </tr>
               `;
             }).join('')}
@@ -358,6 +361,13 @@ window.DolibarrModules.comercial = {
     `;
 
     // Asignar controladores
+    document.querySelectorAll('.btn-pdf-pres').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        window.DolibarrPDF.printPresupuesto(id, db);
+      });
+    });
+
     document.querySelectorAll('.btn-accept-pres').forEach(btn => {
       btn.addEventListener('click', () => {
         const id = parseInt(btn.dataset.id);

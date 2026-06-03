@@ -625,6 +625,7 @@ window.DolibarrModules.rrhh = {
               <th>Fecha de Pago</th>
               <th>Banco Payout</th>
               <th style="text-align: center;">Estado</th>
+              <th style="text-align: center;">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -643,18 +644,29 @@ window.DolibarrModules.rrhh = {
                   <td>${window.DolibarrUtils.formatDate(p.date)}</td>
                   <td><span class="text-muted"><i class="fas fa-university"></i> ${b.bank_name}</span></td>
                   <td style="text-align: center;"><span class="rrhh-badge rrhh-badge-pagado">${p.status}</span></td>
+                  <td style="text-align: center;">
+                    <button class="btn btn-danger btn-sm btn-pdf-boleta" data-id="${p.id}"><i class="fas fa-file-pdf"></i> Boleta PDF</button>
+                  </td>
                 </tr>
               `;
             }).join('')}
             ${(!db.rrhh.payroll_payments || db.rrhh.payroll_payments.length === 0) ? `
               <tr>
-                <td colspan="10" class="text-center text-muted" style="padding: 20px;">No hay registros de salarios liquidados.</td>
+                <td colspan="11" class="text-center text-muted" style="padding: 20px;">No hay registros de salarios liquidados.</td>
               </tr>
             ` : ''}
           </tbody>
         </table>
       </div>
     `;
+
+    // Wire PDF download event
+    document.querySelectorAll('.btn-pdf-boleta').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        window.DolibarrPDF.printBoletaPago(id, db);
+      });
+    });
   },
 
   /**

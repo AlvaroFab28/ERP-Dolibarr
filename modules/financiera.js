@@ -301,9 +301,10 @@ window.DolibarrModules.financiera = {
               const cobrado = this.getPaidAmount(f.ref, 'cliente', db);
               const pendiente = f.total_ttc - cobrado;
               
-              const actionBtn = pendiente > 0 
+              const actionBtn = (pendiente > 0 
                 ? `<button class="btn btn-success btn-sm btn-cobrar-fact" data-ref="${f.ref}" data-monto="${pendiente}"><i class="fas fa-hand-holding-dollar"></i> Cobrar</button>`
-                : `<span class="text-muted" style="font-size:12px;"><i class="fas fa-check-double" style="color:var(--success);"></i> Cobrada</span>`;
+                : `<span class="text-muted" style="font-size:12px; margin-right: 5px;"><i class="fas fa-check-double" style="color:var(--success);"></i> Cobrada</span>`) + 
+                `<button class="btn btn-danger btn-sm btn-pdf-fact-cl" data-id="${f.id}" style="margin-left: 5px;"><i class="fas fa-file-pdf"></i> PDF</button>`;
 
               return `
                 <tr>
@@ -392,6 +393,13 @@ window.DolibarrModules.financiera = {
         document.getElementById('c-date').valueAsDate = new Date();
 
         modal.classList.add('show');
+      });
+    });
+
+    document.querySelectorAll('.btn-pdf-fact-cl').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        window.DolibarrPDF.printFacturaCliente(id, db);
       });
     });
 
@@ -488,9 +496,10 @@ window.DolibarrModules.financiera = {
               const pagado = this.getPaidAmount(f.ref, 'proveedor', db);
               const pendiente = f.total_ttc - pagado;
 
-              const actionBtn = pendiente > 0
+              const actionBtn = (pendiente > 0
                 ? `<button class="btn btn-danger btn-sm btn-pagar-fact" data-ref="${f.ref}" data-monto="${pendiente}"><i class="fas fa-wallet"></i> Pagar</button>`
-                : `<span class="text-muted" style="font-size:12px;"><i class="fas fa-check-double" style="color:var(--success);"></i> Pagada</span>`;
+                : `<span class="text-muted" style="font-size:12px; margin-right: 5px;"><i class="fas fa-check-double" style="color:var(--success);"></i> Pagada</span>`) +
+                `<button class="btn btn-danger btn-sm btn-pdf-fact-prov" data-id="${f.id}" style="margin-left: 5px;"><i class="fas fa-file-pdf"></i> PDF</button>`;
 
               return `
                 <tr>
@@ -579,6 +588,13 @@ window.DolibarrModules.financiera = {
         document.getElementById('p-date').valueAsDate = new Date();
 
         modal.classList.add('show');
+      });
+    });
+
+    document.querySelectorAll('.btn-pdf-fact-prov').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.id);
+        window.DolibarrPDF.printFacturaProveedor(id, db);
       });
     });
 
